@@ -1,0 +1,32 @@
+:root {
+  font-family: 'Segoe UI', sans-serif;
+  color: #f3ead4;
+  background: #142331;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+#root {
+  display: grid;
+  min-height: 100vh;
+  min-height: 100svh;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  background:
+    radial-gradient(ellipse at 50% 28%, #2a4052 0%, transparent 58%),
+    linear-gradient(145deg, #1a2c3b, #101b25 72%);
+}

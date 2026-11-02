@@ -5,7 +5,8 @@ export function ScientistDirectory({ initialData = SMART_PEOPLE }) {
   const [people] = useState(initialData);
   const [query, setQuery] = useState('');
   const [minIq, setMinIq] = useState(160);
-  const [sortBy, setSortBy] = useState('iq-desc');
+  const [sortBy, setSortBy] = useState('iq');
+  const [sortOrder, setSortOrder] = useState('desc');
 
   const nameId = useId();
   const minIqId = useId();
@@ -15,7 +16,10 @@ export function ScientistDirectory({ initialData = SMART_PEOPLE }) {
 
   const visible = people
     .filter((p) => p.name.toLowerCase().includes(search) && p.iq >= minIq)
-    .toSorted((a, b) => (sortBy === 'iq-desc' ? b.iq - a.iq : a.age - b.age));
+    .toSorted((a, b) => {
+      const diff = sortBy === 'iq' ? a.iq - b.iq : a.age - b.age;
+      return sortOrder === 'asc' ? diff : -diff;
+    });
 
   function handleMinIqChange(e) {
     const value = e.target.valueAsNumber;
@@ -47,18 +51,27 @@ export function ScientistDirectory({ initialData = SMART_PEOPLE }) {
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
         >
-          <option value="iq-desc">IQ: high to low</option>
-          <option value="age-asc">Age: young to old</option>
+          <option value="iq">IQ</option>
+          <option value="age">Age</option>
         </select>
+
+        <button
+          type="button"
+          onClick={() =>
+            setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+          }
+        >
+          {sortOrder === 'asc' ? '↑ ASC' : '↓ DESC'}
+        </button>
       </form>
 
-      <ul>
+      <ol>
         {visible.map((p) => (
           <li key={p.id}>
             {p.name} — IQ {p.iq}
           </li>
         ))}
-      </ul>
+      </ol>
     </section>
   );
 }

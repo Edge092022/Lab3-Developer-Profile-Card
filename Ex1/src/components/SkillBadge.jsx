@@ -1,6 +1,8 @@
+import styles from './DeveloperCard.module.css';
+
 function SkillBadge({ name, tier }) {
   return (
-    <span>
+    <span className={styles.badge}>
       {name} ({tier})
     </span>
   );

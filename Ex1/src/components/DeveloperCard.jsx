@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react';
 import { SkillBadge } from './SkillBadge.jsx';
+import styles from './DeveloperCard.module.css';
 
 function getInitials(name) {
   const trimmedName = name.trim();
@@ -34,14 +35,15 @@ export function DeveloperCard({
   const showFallback = !avatarUrl || failedUrl === avatarUrl;
 
   return (
-    <article aria-labelledby="dev-heading">
-      <header>
+    <article className={styles.card} aria-labelledby="dev-heading">
+      <header className={styles.header}>
         {showFallback ? (
-          <span aria-hidden="true">
+          <span className={styles.initials} aria-hidden="true">
             {getInitials(fullName)}
           </span>
         ) : (
           <img
+            className={styles.avatar}
             src={avatarUrl}
             alt={fullName}
             width={64}
@@ -50,13 +52,13 @@ export function DeveloperCard({
           />
         )}
 
-        <hgroup>
-          <h2 id="dev-heading">{fullName}</h2>
-          <p>{role}</p>
+        <hgroup className={styles.titles}>
+          <h2 className={styles.heading} id="dev-heading">{fullName}</h2>
+          <p className={styles.role}>{role}</p>
         </hgroup>
       </header>
 
-      <dl>
+      <dl className={styles.metrics}>
         {Object.entries(metrics).map(([key, value]) => (
           <Fragment key={key}>
             <dt>{key}</dt>
@@ -65,7 +67,7 @@ export function DeveloperCard({
         ))}
       </dl>
 
-      <ul aria-label="Engineered Skills">
+      <ul className={styles.skills} aria-label="Engineered Skills">
         {skills.map((skill) => (
           <li key={skill.id}>
             <SkillBadge name={skill.name} tier={skill.tier} />

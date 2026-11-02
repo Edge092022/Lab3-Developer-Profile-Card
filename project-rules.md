@@ -1,111 +1,70 @@
-# PROJECT RULES – DEVELOPER PROFILE CARD
+# PROJECT RULES – QUY TẮC PHÁT TRIỂN DỰ ÁN
 
-## 1. Tổng quan dự án (Project Overview)
+## PHẦN A – QUY TẮC CHUNG
 
-- **Tên dự án:** Developer Profile Card (Exercise 1).
-- **Mục tiêu:** Xây dựng giao diện thẻ hồ sơ Developer bằng React 19.
-- **Mục đích học tập:** Thực hành xây dựng React Components, Semantic HTML, Accessibility và Responsive Design.
-- **Phạm vi:** Chỉ tập trung vào giao diện hồ sơ cá nhân, không phát triển thành hệ thống quản lý tài khoản hoặc mạng xã hội.
-- **Số lượng card:** Đề không quy định. `App` chỉ render một `<DeveloperCard />` dùng default props; không mở rộng thành danh sách nhiều card.
+### 1. Nguyên tắc làm việc
 
-Hai component chính:
+- Hiểu yêu cầu trước khi bắt đầu viết code.
+- Xác định vấn đề cần giải quyết và kết quả mong muốn.
+- Chia dự án thành những nhiệm vụ nhỏ, có thể thực hiện và kiểm tra độc lập.
+- Ưu tiên giải pháp đơn giản, dễ hiểu và phù hợp với quy mô dự án.
+- Không thêm chức năng ngoài phạm vi nếu chưa hoàn thành yêu cầu chính.
 
-- `DeveloperCard`: Hiển thị thông tin tổng quan của Developer.
-- `SkillBadge`: Hiển thị từng kỹ năng của Developer.
+### 2. Nguyên tắc viết code
 
-## 2. Công nghệ sử dụng
+- Viết code rõ ràng, dễ đọc và dễ bảo trì.
+- Mỗi thành phần nên có nhiệm vụ và trách nhiệm rõ ràng.
+- Tránh lặp lại code không cần thiết.
+- Không tạo cấu trúc hoặc độ phức tạp không phục vụ mục tiêu dự án.
+- Sử dụng tên biến, hàm và thành phần có ý nghĩa.
+- Kiểm tra kết quả sau mỗi chức năng quan trọng.
 
-- React 19: Xây dựng giao diện bằng Components.
-- Vite: Khởi tạo và chạy môi trường phát triển (theo yêu cầu slide).
-- JavaScript: Xử lý dữ liệu và logic.
-- CSS Modules và CSS Custom Properties: Quản lý CSS.
-- Git: Quản lý phiên bản và theo dõi quá trình phát triển.
+### 3. Nguyên tắc sử dụng AI
 
-Không tự ý bổ sung thư viện hoặc công nghệ không cần thiết cho phạm vi bài tập.
+- AI là công cụ hỗ trợ, không thay thế tư duy và quyết định của người phát triển.
+- Không sao chép code do AI tạo ra khi chưa hiểu cách hoạt động.
+- Yêu cầu AI giải thích những khái niệm hoặc đoạn code chưa hiểu.
+- Kiểm tra code AI đề xuất trước khi chấp nhận.
+- Tự kiểm thử và xác nhận kết quả thay vì mặc định AI luôn đúng.
+- Ghi lại những lỗi AI thực sự mắc phải, cách phát hiện và cách khắc phục nếu dự án yêu cầu.
 
-## 3. Quy tắc kiến trúc
+### 4. Nguyên tắc quản lý phiên bản
 
-- Sử dụng Functional Components.
-- Tách riêng `DeveloperCard` và `SkillBadge`; cả hai nằm trong `src/components/`.
-- Sử dụng Props để truyền dữ liệu giữa các component; dùng ES6 default parameters theo code mẫu.
-- Khi code mẫu slide 14 khác phần mô tả, **code mẫu là chuẩn**.
-- Không thêm tính năng, thư viện hay yêu cầu ngoài đề. Muốn đề xuất cải tiến thì phải giải thích và hỏi trước.
-- Không lặp lại code không cần thiết.
-- Không xây dựng kiến trúc phức tạp vượt quá quy mô bài tập.
+- Sử dụng Git để theo dõi lịch sử thay đổi.
+- Mỗi Git Commit nên đại diện cho một thay đổi có ý nghĩa.
+- Không tạo commit giả hoặc chia nhỏ commit một cách thiếu tự nhiên.
+- Kiểm tra những thay đổi trước khi commit.
+- Viết nội dung commit ngắn gọn, phản ánh đúng công việc đã thực hiện.
 
-## 4. Quy tắc HTML
+---
 
-- File `DeveloperCard.jsx` không được chứa thẻ `<div>`.
-- Sử dụng `<article>` cho nội dung hồ sơ độc lập, gắn `aria-labelledby='dev-heading'` với `<h2 id='dev-heading'>`.
-- Sử dụng `<header>` cho phần giới thiệu (avatar + `<hgroup>`).
-- Sử dụng `<hgroup>` nhóm tên và chức danh.
-- Sử dụng `<dl>`, `<dt>`, `<dd>` cho metrics, bọc từng cặp bằng `Fragment` có `key`.
-- Sử dụng `<ul aria-label='Engineered Skills'>` và `<li key={s.id}>` cho danh sách kỹ năng.
-- Đảm bảo thứ bậc tiêu đề hợp lý.
-- Không sử dụng thẻ HTML chỉ nhằm mục đích trang trí khi có thẻ ngữ nghĩa phù hợp.
+## PHẦN B – CHO LAB 03
 
-## 5. Quy tắc giao diện
+### 5. Mục tiêu dự án
 
-- Sử dụng CSS Modules; style của cả `DeveloperCard` và `SkillBadge` nằm trong `DeveloperCard.module.css`. Không tạo `SkillBadge.module.css`.
-- Sử dụng CSS Custom Properties.
-- Không dùng inline styles; không dùng Tailwind CSS hoặc framework CSS khác.
-- Giao diện phải Responsive trong khoảng chiều rộng từ 375px đến 1440px.
-- Không để nội dung bị tràn ngang (kiểm tra iPhone SE 375px, không horizontal scroll).
-- Đảm bảo văn bản dễ đọc và bố cục nhất quán.
+- Hoàn thành ba Exercise, Homework 3 và bài bonus theo yêu cầu tài liệu Lab 03.
+- Hiểu và vận dụng các kiến thức React 19.
+- Có khả năng giải thích những quyết định kỹ thuật và cách hoạt động của code.
 
-## 6. Quy tắc xử lý dữ liệu và hình ảnh
+### 6. Công nghệ sử dụng
 
-- Skill object gồm `id`, `name`, `tier` (không dùng `level`).
-- `SkillBadge` nhận props `name`, `tier`; thẻ gốc là `<span>`; hiển thị `name (tier)`. Mỗi `<li>` chứa một `<SkillBadge />`.
-- Sử dụng `Object.entries()` cho Metrics; giữ nguyên key `commits`, `vdomNodes`, `a11yScore` làm nhãn như code mẫu.
-- Danh sách Skills dùng `key={s.id}`, không dùng index.
-- Ảnh Avatar chỉ sử dụng HTTPS, khai báo `width` và `height`.
-- Fallback initials khi **thiếu `avatarUrl`** và khi **ảnh tải thất bại**:
-  - Dùng `useState` lưu `failedUrl`, không dùng `useEffect`.
-  - Initials lấy chữ đầu của mọi từ trong `fullName` (`Tran Vinh Khiem` → `TVK`); tên rỗng hiển thị `?`.
-  - Initials là `<span>` có `aria-hidden="true"`, cùng kích thước 64×64 với ảnh.
-- Logic avatar nằm trong `DeveloperCard`, không tạo component `Avatar` riêng.
+- UI Library: React 19.
+- Ngôn ngữ lập trình: JavaScript.
+- Build Tool: Vite.
+- Quản lý mã nguồn: Git và GitHub.
+- CSS Modules: sử dụng cho những phần được yêu cầu trong đề bài.
 
-## 7. Quy tắc sử dụng AI
+### 7. Yêu cầu chất lượng
 
-- Không giao AI tự thực hiện toàn bộ dự án từ đầu đến cuối.
-- AI chỉ hỗ trợ các task cụ thể đã được xác định, mỗi lần một phạm vi rõ ràng.
-- Người làm bài tự chạy lệnh trên máy mình và gửi kết quả để AI review; AI không tự commit.
-- Phải hiểu yêu cầu và luồng xử lý trước khi yêu cầu AI viết code.
-- Không sao chép nguyên kết quả AI mà không kiểm tra.
-- Không chấp nhận giải pháp AI đề xuất nếu vi phạm Project Rules.
-- Ghi nhận các lỗi AI thực sự phát sinh trong `AI_FAILURE_AUDIT.md`; không ghi lỗi giả định.
+- Tuân thủ yêu cầu cụ thể của từng Exercise và Homework.
+- Sử dụng HTML Semantic phù hợp.
+- Đảm bảo giao diện Responsive, đặc biệt ở chiều rộng màn hình 375px.
+- Chú trọng tính đúng đắn của chức năng và quản lý State.
+- Kiểm tra các trạng thái giao diện và những tình huống lỗi có thể xảy ra.
+- Ưu tiên hoàn thành yêu cầu bắt buộc trước khi phát triển tính năng bổ sung.
 
-## 8. Quy tắc kiểm tra
+### 8. Quy tắc Git riêng của dự án
 
-Trước khi xác nhận hoàn thành một task, cần:
-
-- Kiểm tra cấu trúc component.
-- Kiểm tra Semantic HTML.
-- Kiểm tra Accessibility.
-- Kiểm tra Responsive Design.
-- Kiểm tra lỗi trên Browser Console.
-- Kiểm tra kết quả hiển thị thực tế.
-- Kiểm tra các thay đổi trong Git.
-
-Các kiểm tra theo slide 13:
-
-- `grep -n '<div>' src/components/DeveloperCard.jsx` → 0 kết quả.
-- `grep -n 'http://' src/components/DeveloperCard.jsx` → 0 kết quả.
-- Chrome DevTools, Accessibility Tree: `article → header + dl + list`.
-- Device Toolbar, iPhone SE (375px): không horizontal scroll.
-- `git log`: có hai commit bắt buộc đúng message.
-
-Chỉ đánh dấu task hoàn thành khi đã có bằng chứng kiểm tra. Hiện chưa có file `ex1-verification-audit.sh` chính thức; không dùng script tự tạo như thể là script của giảng viên.
-
-## 9. Quy tắc Git
-
-- Sử dụng Git để quản lý lịch sử phát triển; người làm bài tự chạy `git commit`.
-- Tổng số commits cho Exercise 1 phải **từ 10 trở lên** (theo yêu cầu bài Lab).
-- Bắt buộc có hai commit với message chính xác theo slide:
-  1. `feat(ex1): implement semantic DeveloperCard and SkillBadge`
-  2. `style(ex1): add responsive 375px CSS module`
-- Các commit còn lại phải phản ánh công việc thật, được chia nhỏ hợp lý, message rõ ràng.
-- Không tạo commit rỗng hoặc commit giả để đủ số lượng.
-- Không gộp nhiều thay đổi không liên quan vào cùng một commit.
-- Trước mỗi commit: kiểm tra `git status`, `git diff`, chọn file bằng `git add <file>`.
+- Mục tiêu: ít nhất 10 Git Commits có ý nghĩa.
+- Mỗi commit ghi nhận một phần công việc thực tế.
+- Không tạo commit chỉ để đạt số lượng.

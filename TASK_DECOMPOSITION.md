@@ -1,353 +1,242 @@
-# TASK_DECOMPOSITION.md
+# TASK DECOMPOSITION – PHÂN RÃ CÔNG VIỆC LAB 03
 
-# Exercise 1 – Semantic Engineer & Pro-Gamer Profile Card
+## 1. Mục tiêu và phạm vi
 
-> Cập nhật 30/10/2026 theo các quyết định đã chốt. Danh sách thay đổi so với bản đầu nằm ở mục 15.
+Phân chia Lab 03 thành các giai đoạn và nhiệm vụ nhỏ để dễ triển khai, theo dõi tiến độ và kiểm tra kết quả.
 
-## 1. Mục tiêu
+**Phạm vi:** đúng 3 Exercise:
 
-Xây dựng hai React components:
+- Exercise 1 – DeveloperCard + SkillBadge
+- Exercise 2 – ScientistDirectory
+- Exercise 3 – PubgMatchTelemetry
 
-- `DeveloperCard`
-- `SkillBadge`
+Homework 3 và Bonus không thuộc kế hoạch này.
 
-Sử dụng React 19 và Vite, dựa trên nội dung Elon Musk Card (Ex 4.4) và User Profile (Ex 4.5), nâng cấp từ các bài cũ (Ex 0.2, 0.3, 4.1, 4.4, 4.5) và áp dụng quy tắc Zero Div-Soup của Lab 2.
+Nguyên tắc:
 
-Mục tiêu là xây dựng Developer Profile Card có thông tin cá nhân, metrics và danh sách skills, đồng thời tuân thủ các yêu cầu về Semantic HTML, CSS Modules, responsive design và Git.
+- Hoàn thành yêu cầu bắt buộc trước.
+- Ưu tiên chức năng đúng trước khi tối ưu giao diện.
+- Không thêm tính năng ngoài đề khi chưa hoàn thành yêu cầu chính.
+- Mỗi nhiệm vụ cần có kết quả và tiêu chí hoàn thành rõ ràng.
 
-## 2. Yêu cầu chính thức từ slide
+### 1.1. Nhãn nguồn
 
-### 2.1. React và cấu trúc component
+| Nhãn | Ý nghĩa                                                                                     |
+| ---- | ------------------------------------------------------------------------------------------- |
+| [ĐỀ] | Yêu cầu từ slide Lab 03 (Task Specifications, Reference Contract, Verification) hoặc rubric |
+| [CN] | Quyết định cá nhân của người làm bài, không phải yêu cầu của đề                             |
+| [XM] | Chưa xác minh hoặc chưa đủ dữ liệu; không được coi là yêu cầu bắt buộc                      |
 
-- Sử dụng React 19 và Vite.
-- Xây dựng `DeveloperCard` và `SkillBadge`, đặt trong `src/components/`.
-- `DeveloperCard` là functional component theo hướng pure: render không có side effect. Đã chốt: dùng `useState` cho avatar fallback là phù hợp, vì state chỉ được cập nhật trong event handler `onError`, không phải trong lúc render.
-- Sử dụng ES6 default parameters cho props.
+Với Exercise 1: khi code mẫu slide 14 khác phần mô tả trên cùng slide, **code mẫu là chuẩn** [CN].
 
-### 2.2. Semantic HTML – Zero Div-Soup
-
-Trong file `DeveloperCard.jsx`:
-
-- Không được sử dụng bất kỳ thẻ `<div>` nào.
-- Dùng `<article>`, `<header>`, `<hgroup>`, `<dl>`, `<dt>`, `<dd>`, `<ul>`, `<li>` và `Fragment` (component của React, bọc cặp `<dt>`/`<dd>` mà không thêm thẻ HTML).
-
-Cấu trúc tham chiếu:
-
-- `<article>` là landmark độc lập, `aria-labelledby='dev-heading'` gắn với `<h2 id='dev-heading'>`.
-- `<header>` chứa avatar và `<hgroup>` (tên + chức danh).
-- `<dl>` chứa metrics; `<dt>` là tên metric, `<dd>` là giá trị.
-- `<ul>` và `<li>` hiển thị skills.
-
-### 2.3. Metrics
-
-Dữ liệu mẫu: `commits: 512`, `vdomNodes: 0`, `a11yScore: 100`.
-
-Dùng `Object.entries(metrics)` và `Fragment key={k}` bọc cặp `<dt>`/`<dd>`. **Đã chốt:** giữ nguyên key làm nhãn hiển thị như code mẫu.
-
-### 2.4. Skills
-
-Dữ liệu mẫu: `{ id: 'sk-1', name: 'React 19 Fiber', tier: 'Core' }`.
-
-Phần mô tả trên slide 14 ghi `{ id, name, level }` và `aria-label='Skills'`, còn code mẫu ghi `tier` và `aria-label='Engineered Skills'`. **Đã chốt:** theo code mẫu.
-
-- Skill object dùng `id`, `name`, `tier`.
-- `<ul aria-label='Engineered Skills'>` với `<li key={s.id}>`.
-- `SkillBadge` là component riêng, nhận props `name`, `tier`, thẻ gốc `<span>`, hiển thị `name (tier)`.
-- Mỗi `<li>` chứa một `<SkillBadge />`; `key` đặt trên `<li>`.
-
-### 2.5. Avatar
-
-Yêu cầu từ slide: thay avatar `http://` không an toàn bằng HTTPS, khai báo `width` và `height` rõ ràng (CLS bằng 0), có fallback initials.
-
-Code mẫu slide 14 chưa có fallback. **Đã chốt (quyết định của người làm bài):** hiển thị initials trong cả hai trường hợp: thiếu `avatarUrl` và ảnh tải thất bại.
-
-### 2.6. CSS và Responsive Design
-
-- Thay inline style của slide 18 (`style={{ background: '#d0f0c0' }}`) bằng `DeveloperCard.module.css` và CSS Custom Properties.
-- Chỉ có một file `DeveloperCard.module.css`, dùng chung cho `SkillBadge`; không tạo `SkillBadge.module.css`.
-- Hoạt động ở viewport 375px (iPhone SE) và theo project rules từ 375px đến 1440px.
-- Không horizontal scroll.
-
-### 2.7. Git
-
-Quy định: tổng số commits từ **10 trở lên** (yêu cầu của bài Lab), trong đó bắt buộc có hai atomic commits với message chính xác theo slide:
-
-1. `feat(ex1): implement semantic DeveloperCard and SkillBadge`
-2. `style(ex1): add responsive 375px CSS module`
-
-Không thay đổi hai message này. Các commit còn lại phải phản ánh công việc thật, không có commit rỗng hoặc commit giả. Người làm bài tự chạy mọi lệnh `git commit`.
-
-## 3. Phân tích dữ liệu mẫu từ slide
-
-Giá trị mặc định trong code slide 14:
-
-| Prop        | Giá trị mặc định                                 |
-| ----------- | ------------------------------------------------ |
-| `fullName`  | `Tran Vinh Khiem`                                |
-| `role`      | `Senior Systems Architect • UIT S3T`             |
-| `avatarUrl` | Unsplash HTTPS URL                               |
-| `metrics`   | `commits: 512`, `vdomNodes: 0`, `a11yScore: 100` |
-| `skills`    | Một skill mẫu: `React 19 Fiber`, tier `Core`     |
-
-**Đã chốt:** slide không quy định số lượng card, nên `App` chỉ render một `<DeveloperCard />` dùng default props; không mở rộng thành danh sách card. Id cố định `dev-heading` hợp lệ khi chỉ có một card.
-
-## 4. Quyết định thiết kế đã chốt
-
-| #   | Vấn đề                                 | Quyết định                                                   |
-| --- | -------------------------------------- | ------------------------------------------------------------ |
-| 1   | Nguồn chuẩn khi mẫu và mô tả khác nhau | Code mẫu slide 14                                            |
-| 2   | Data flow                              | `App` → một `<DeveloperCard />`, default props               |
-| 3   | Props của SkillBadge                   | `name`, `tier`                                               |
-| 4   | Thẻ gốc SkillBadge                     | `<span>`, nội dung `name (tier)`                             |
-| 5   | Vị trí logic avatar                    | Trong `DeveloperCard`, không tạo `Avatar`                    |
-| 6   | Theo dõi ảnh lỗi                       | `useState` lưu `failedUrl`, không dùng `useEffect`           |
-| 7   | Initials                               | Chữ đầu mọi từ (`TVK`), `aria-hidden="true"`, tên rỗng → `?` |
-| 8   | CSS                                    | Chỉ `DeveloperCard.module.css`                               |
-| 9   | Commit `feat` đầu tiên                 | Kèm CSS Module tối thiểu để build không lỗi                  |
-| 10  | Nhãn metrics                           | Giữ nguyên key như code mẫu                                  |
-| 11  | Không thêm tính năng                   | Đề xuất cải tiến phải giải thích và hỏi trước                |
-| 12  | Nơi đặt project                        | Repo trên máy người làm bài                                  |
-
-## 5. Kiểm tra môi trường dự án (T0)
-
-Project nằm trong repo trên máy người làm bài; trợ lý AI không truy cập được. Người làm bài chạy các lệnh sau trong thư mục dự định làm bài và gửi kết quả:
-
-- `node -v` và `npm -v`
-- `git --version`
-- `git status` (cho biết đã là Git repo chưa)
-- Liệt kê file trong thư mục (`ls` hoặc `dir`) để biết thư mục đã có gì (hiện đã có `project-rules.md` và `TASK_DECOMPOSITION.md`).
-
-Kết quả T0 được ghi vào mục này sau khi có. Chưa biết: phiên bản Node/npm, trạng thái Git repo, phiên bản React mà template Vite sẽ cài (kiểm tra bằng `npm ls react` sau T1).
-
-## 6. Triển khai SkillBadge
-
-Mục tiêu: component `SkillBadge` hiển thị một skill.
-
-- Props `name`, `tier`; thẻ gốc `<span>`; hiển thị `name (tier)`.
-- Không có file CSS riêng.
-
-**Tiêu chí hoàn thành:** hoạt động với dữ liệu qua props (`React 19 Fiber`, `Core`); tái sử dụng được; không có chức năng ngoài yêu cầu.
-
-## 7. Triển khai DeveloperCard
-
-Mục tiêu: component chính hiển thị Developer Profile Card.
-
-- Default parameters theo slide 14.
-- Cấu trúc `article → header(img + hgroup) + dl + ul` như mục 2.2.
-- Avatar HTTPS, `width='64'`, `height='64'`.
-- Metrics bằng `Object.entries(metrics)` và `Fragment key={k}`.
-- Skills bằng `<ul aria-label='Engineered Skills'>` và `<li key={s.id}><SkillBadge /></li>`.
-- Không có `<div>`.
-
-**Tiêu chí hoàn thành:** hiển thị đủ các nhóm thông tin; dữ liệu qua props; không có `<div>` và không có `http://` (hai lệnh grep ở mục 10.1).
-
-## 8. Xử lý Avatar
-
-- Thiếu `avatarUrl`: hiển thị initials, tính trực tiếp khi render, không cần state.
-- Có `avatarUrl` nhưng ảnh lỗi: `onError` lưu URL lỗi vào `failedUrl`; hiển thị ảnh khi `avatarUrl` có giá trị và khác `failedUrl`. Không dùng `useEffect`.
-- Initials: chữ đầu mọi từ của `fullName`; tên rỗng → `?`; `<span aria-hidden="true">`, kích thước 64×64.
-
-**Tiêu chí hoàn thành:** thử đủ ba trường hợp: ảnh tải được, URL rỗng, URL hỏng; tên rỗng ra `?`; layout không nhảy khi chuyển giữa ảnh và initials.
-
-## 9. CSS Modules và Responsive Design
-
-- Bản tối thiểu của `DeveloperCard.module.css` có trong commit `feat` đầu tiên (có quy tắc thật cho `.card`, `.header`, `.metrics`, `.skills`).
-- Style hoàn thiện theo khu vực: header/avatar, metrics/skills, rồi responsive.
-- Dùng CSS Custom Properties.
-- Kiểm tra 375px, 768px, 1440px; không horizontal scroll.
-
-**Tiêu chí hoàn thành:** style do CSS Module quản lý; hoạt động từ 375px đến 1440px; không horizontal overflow.
-
-## 10. Verification – Kiểm tra kết quả
-
-### 10.1. Source code audit
-
-Slide 13 hiển thị hai lệnh kiểm tra (kèm tiêu đề `ex1-verification-audit.sh`):
+### 1.2. Cấu trúc thư mục đã chốt [CN]
 
 ```
-grep -n '<div>' src/components/DeveloperCard.jsx     # mong đợi: 0 kết quả
-grep -n 'http://' src/components/DeveloperCard.jsx   # mong đợi: 0 kết quả
+Lab3_WD/
+├── .vscode/
+│   └── settings.json
+├── .gitignore
+├── AI_FAILURE_AUDIT.md
+├── project-rules.md
+├── TASK_DECOMPOSITION.md
+├── Ex1/
+├── Ex2/
+└── Ex3/
 ```
 
-Hiện chưa có file script chính thức. Không tự tạo file rồi nhận đó là script của giảng viên; có thể chạy trực tiếp hai lệnh trên.
+- Mỗi Exercise có một folder riêng chứa source code và các file cần thiết của Exercise đó.
+- Các tài liệu dự án và cấu hình chung nằm ở thư mục gốc.
+- Đường dẫn trong slide (`src/components/...`) được hiểu là tương đối với folder của Exercise tương ứng:
 
-### 10.2. Accessibility
+| Exercise | File chính theo slide                     | Đường dẫn tính từ thư mục gốc                 |
+| -------- | ----------------------------------------- | --------------------------------------------- |
+| Ex1      | `src/components/DeveloperCard.jsx`        | `Ex1/src/components/DeveloperCard.jsx`        |
+| Ex1      | `src/components/DeveloperCard.module.css` | `Ex1/src/components/DeveloperCard.module.css` |
+| Ex1      | `src/components/SkillBadge.jsx`           | `Ex1/src/components/SkillBadge.jsx`           |
+| Ex2      | `src/components/ScientistDirectory.jsx`   | `Ex2/src/components/ScientistDirectory.jsx`   |
+| Ex3      | `src/components/PubgMatchTelemetry.jsx`   | `Ex3/src/components/PubgMatchTelemetry.jsx`   |
 
-Chrome DevTools, Elements, Accessibility Tree: `article → header + dl + list`. Người làm bài thực hiện trên Chrome và báo kết quả.
+### 1.3. Quyền kiểm soát Git [CN]
 
-### 10.3. Responsive
+- Người làm bài quyết định thời điểm commit và push.
+- Claude Code không tự commit hoặc push khi chưa có sự cho phép rõ ràng của người làm bài.
+- AI chỉ đề xuất commit message và thời điểm commit; chờ người làm bài duyệt trước khi thực hiện.
+- Giữ nguyên lịch sử Git hiện tại; không rewrite commit cũ.
 
-Chrome DevTools Device Toolbar, iPhone SE (375px), không horizontal scroll. Người làm bài thực hiện và báo kết quả.
+## 2. Phân rã công việc
 
-### 10.4. Git
+### Giai đoạn 0 – Chuẩn bị dự án
 
-`git log --oneline` có từ 10 commits trở lên, trong đó có hai commit bắt buộc đúng message theo slide.
+| ID  | Nhiệm vụ                               | Kết quả cần đạt                                                                                                                                                                                                                                            | Nguồn       |
+| --- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 0.1 | Kiểm tra cấu trúc thư mục hiện tại     | Đối chiếu cấu trúc hiện tại với cấu trúc đích ở mục 1.2 (`Ex1/`, `Ex2/`, `Ex3/`); kiểm tra các file cấu hình và tài liệu ở thư mục gốc; ghi lại điểm khác biệt. Không tự ý di chuyển, xóa hoặc tạo lại file khi chưa được duyệt                            | [CN]        |
+| 0.2 | Kiểm tra `Ex1/` và đề xuất khởi tạo    | Kiểm tra `Ex1/` đã tồn tại hay chưa và có những file gì; xác nhận chưa có project Vite được khởi tạo; đề xuất cấu hình khởi tạo project Vite dùng React 19.x trong `Ex1/` [ĐỀ: React 19 + Vite]. Chưa chạy lệnh khởi tạo hoặc tạo file khi chưa được duyệt | [ĐỀ] + [CN] |
+| 0.3 | Xác định cách tổ chức `Ex2/` và `Ex3/` | Xác định cách tổ chức và khởi tạo project cho `Ex2/`, `Ex3/`, thống nhất với cách làm của `Ex1/` (xem mục 4). Chưa tạo folder hoặc chạy lệnh khởi tạo trước khi được duyệt                                                                                 | [CN] + [XM] |
+| 0.4 | Kiểm tra `project-rules.md`            | Xác nhận nội dung được giữ nguyên; không chỉnh sửa, bổ sung hoặc viết lại                                                                                                                                                                                  | [CN]        |
+| 0.5 | Hoàn thiện `TASK_DECOMPOSITION.md`     | Tài liệu được người làm bài duyệt                                                                                                                                                                                                                          | [CN]        |
 
-## 11. Git và tài liệu
+Việc khởi tạo project cho từng Exercise là nhiệm vụ riêng (1.0b, 2.0, 3.0), chỉ thực hiện sau khi phương án ở 0.2 và 0.3 được duyệt [CN].
 
-Các file tài liệu cần duy trì:
+**Tiêu chí hoàn thành:**
 
-- `project-rules.md`
-- `TASK_DECOMPOSITION.md`
-- `AI_FAILURE_AUDIT.md`: chỉ ghi lỗi hoặc thất bại thực tế của AI; không ghi lỗi giả định.
+- [ ] Đã kiểm tra và ghi nhận cấu trúc repository hiện tại.
+- [ ] Đã thống nhất phương án khởi tạo project Vite React 19.x cho từng Exercise.
+- [ ] Đã xác định cách tổ chức `Ex1/`, `Ex2/`, `Ex3/`.
+- [ ] `TASK_DECOMPOSITION.md` được người làm bài duyệt.
+- [ ] `project-rules.md` được giữ nguyên.
 
-Git: xem mục 14.
+### Giai đoạn 1 – Exercise 1: DeveloperCard và SkillBadge (làm lại từ đầu)
 
-## 12. Trạng thái các điểm cần xác nhận
+Implementation Exercise 1 cũ đã được người làm bài xóa; xây dựng lại từ đầu, không khôi phục bản cũ và không yêu cầu xóa lại [CN]. Mọi đường dẫn trong giai đoạn này tính từ `Ex1/`.
 
-| #   | Điểm                               | Trạng thái                                             |
-| --- | ---------------------------------- | ------------------------------------------------------ |
-| 1   | Số lượng DeveloperCard             | Đã chốt: một card mặc định                             |
-| 2   | `tier` hay `level`                 | Đã chốt: `tier`                                        |
-| 3   | `aria-label` của skills            | Đã chốt: `Engineered Skills`                           |
-| 4   | Avatar fallback                    | Đã chốt: cả thiếu URL và ảnh lỗi                       |
-| 5   | Nhãn metrics                       | Đã chốt: giữ nguyên key                                |
-| 6   | "Pure" và `useState`               | Đã chốt: giữ `useState` với `failedUrl`                |
-| 7   | Nơi đặt project và Git             | Đã chốt: repo trên máy người làm bài                   |
-| 8   | Script `ex1-verification-audit.sh` | Không có bản chính thức; dùng hai lệnh grep trên slide |
-| 9   | Vị trí file                        | `src/components/` (theo slide 13 và 14)                |
+| ID   | Nhiệm vụ                           | Kết quả cần đạt                                                                                                                                                                                                                          | Nguồn                       |
+| ---- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| 1.0  | Xác nhận trạng thái trước khi làm  | Kiểm tra `git status` và `git diff` để xác nhận, ghi nhận các thay đổi xóa implementation cũ đã thực hiện trước đó; ghi nhận các file còn tham chiếu tới file đã xóa (nếu có). Không tự ý xóa thêm file hoặc khôi phục implementation cũ | [CN]                        |
+| 1.0b | Khởi tạo project Vite trong `Ex1/` | Thực hiện theo phương án đã duyệt ở 0.2; `npm ls react` cho React 19.x; `npm run dev` chạy được                                                                                                                                          | [ĐỀ] + [CN]                 |
+| 1.1  | Xác định dữ liệu hồ sơ             | Default parameters theo slide 14: `fullName`, `role`, `avatarUrl` (HTTPS), `metrics` (`commits`, `vdomNodes`, `a11yScore`), `skills`                                                                                                     | [ĐỀ]                        |
+| 1.2  | Xây dựng SkillBadge                | Component riêng trong `src/components/`; nhận `name`, `tier`; thẻ gốc `<span>`; hiển thị `name (tier)`                                                                                                                                   | [ĐỀ] + [CN]                 |
+| 1.3  | Xây dựng DeveloperCard             | `article[aria-labelledby='dev-heading'] → header(img + hgroup) + dl + ul[aria-label='Engineered Skills']`; named export như contract                                                                                                     | [ĐỀ]                        |
+| 1.4  | Truyền dữ liệu bằng Props          | ES6 default parameters; không dùng `defaultProps`; `App` render một `<DeveloperCard />`                                                                                                                                                  | [ĐỀ] + [CN]                 |
+| 1.4b | Xử lý Avatar                       | HTTPS, `width`/`height` = 64 (CLS 0); fallback initials khi thiếu `avatarUrl` và khi ảnh lỗi; dùng state `failedUrl`, không `useEffect`                                                                                                  | Yêu cầu [ĐỀ], cách làm [CN] |
+| 1.6  | Tạo giao diện bằng CSS Modules     | `DeveloperCard.module.css` + CSS Custom Properties; không inline style; chỉ một file CSS Module dùng chung cho SkillBadge                                                                                                                | [ĐỀ] + [CN]                 |
+| 1.7  | Kiểm tra Responsive                | iPhone SE (375px) không cuộn ngang                                                                                                                                                                                                       | [ĐỀ]                        |
+| 1.5  | Xử lý chọn SkillBadge (bổ sung)    | Hiển thị thông tin kỹ năng được chọn. **Không có trong slide.** Chỉ làm sau 1.7 khi các yêu cầu bắt buộc đã xong và người làm bài đồng ý                                                                                                 | [CN]                        |
 
-Chưa còn điểm nào mở. Điểm mới phát sinh sẽ được thêm vào đây.
+Chi tiết đã chốt cho Exercise 1 [CN]:
 
-## 13. Tiêu chí hoàn thành Exercise 1
+- Skill object dùng `id`, `name`, `tier` (không dùng `level`); `<li key={s.id}>` chứa một `<SkillBadge />`.
+- Metrics dùng `Object.entries(metrics)` và `<Fragment key={k}>` bọc cặp `<dt>`/`<dd>`; giữ nguyên key làm nhãn.
+- Initials: chữ đầu mọi từ của `fullName` (`Tran Vinh Khiem` → `TVK`); tên rỗng → `?`; `<span aria-hidden="true">` kích thước 64×64.
+- Logic avatar nằm trong `DeveloperCard`, không tạo component `Avatar` riêng.
 
-- [ ] Có `DeveloperCard` và `SkillBadge` trong `src/components/`.
-- [ ] Sử dụng React 19 và Vite.
-- [ ] `DeveloperCard.jsx` không chứa `<div>` (grep ra 0 kết quả).
-- [ ] Không có `http://` trong `DeveloperCard.jsx` (grep ra 0 kết quả).
-- [ ] Sử dụng Semantic HTML phù hợp.
-- [ ] Metrics render bằng `<dl>`, `<dt>`, `<dd>`, `Object.entries()` và `Fragment key={k}`.
-- [ ] Skills render bằng `<ul aria-label="Engineered Skills">` và `<li key={s.id}>`.
-- [ ] `SkillBadge` nhận `name`, `tier`, thẻ gốc `<span>`, hiển thị `name (tier)`.
-- [ ] Avatar dùng HTTPS, có width/height và fallback initials (thiếu URL và ảnh lỗi).
-- [ ] Có `DeveloperCard.module.css` và CSS Custom Properties; không còn inline style.
-- [ ] Responsive từ 375px đến 1440px, không horizontal scroll.
-- [ ] Accessibility Tree có cấu trúc `article → header + dl + list`.
-- [ ] Từ 10 commits trở lên, có hai commit bắt buộc đúng message theo slide.
-- [ ] Các tài liệu dự án được cập nhật trung thực.
+**Tiêu chí hoàn thành** (các lệnh chạy trong `Ex1/`):
 
-## 14. Kế hoạch triển khai và Git
+- [ ] `grep -n '<div' src/components/DeveloperCard.jsx` → 0 kết quả [ĐỀ]
+- [ ] `grep -n 'http://' src/components/DeveloperCard.jsx` → 0 kết quả [ĐỀ]
+- [ ] Chrome DevTools, Accessibility Tree: `article → header + dl + list` [ĐỀ]
+- [ ] Device Toolbar, iPhone SE (375px): không cuộn ngang [ĐỀ]
+- [ ] Avatar: thử đủ ba trường hợp ảnh tải được, URL rỗng, URL hỏng; layout không nhảy [CN]
+- [ ] Có 2 commit đúng message bắt buộc (mục 3) [ĐỀ]
 
-### 14.1. Thứ tự task và commit
+### Giai đoạn 2 – Exercise 2: ScientistDirectory
 
-Thứ tự phụ thuộc chính: T0 → T1 → T2 → T6 → T7 → T8 → T9 → T10 → T11 → T12. Task tài liệu T3–T5 làm sau T1. ★ là commit bắt buộc.
+Mọi đường dẫn trong giai đoạn này tính từ `Ex2/`. Thứ tự xử lý dữ liệu [CN]: Original list → Search → IQ filter → Sort → Display. Dữ liệu hiển thị (`visible`) được tính trực tiếp trong render [ĐỀ].
 
-| Task | Commit           | Message đề xuất                                              |
-| ---- | ---------------- | ------------------------------------------------------------ |
-| T0   | (không)          | kiểm tra môi trường                                          |
-| T1   | C1               | `chore: scaffold React 19 project with Vite`                 |
-| T2   | C2               | `chore: remove Vite template boilerplate`                    |
-| T3   | C3               | `docs: add project-rules.md`                                 |
-| T4   | C4               | `docs: add TASK_DECOMPOSITION.md`                            |
-| T5   | C5               | `docs: add AI_FAILURE_AUDIT.md template`                     |
-| T6   | C6 ★             | `feat(ex1): implement semantic DeveloperCard and SkillBadge` |
-| T7   | C7               | `feat(ex1): render DeveloperCard in App`                     |
-| T8   | C8               | `feat(ex1): add avatar initials fallback`                    |
-| T9   | C9               | `style(ex1): style card header and avatar`                   |
-| T10  | C10              | `style(ex1): style metrics and skills list`                  |
-| T11  | C11 ★            | `style(ex1): add responsive 375px CSS module`                |
-| T12  | (không bắt buộc) | chỉ commit nếu kiểm tra phát hiện lỗi cần sửa                |
+| ID  | Nhiệm vụ                            | Kết quả cần đạt                                                                                                                                  | Nguồn       |
+| --- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| 2.0 | Khởi tạo project trong `Ex2/`       | Thực hiện theo phương án đã duyệt ở 0.3, thống nhất với `Ex1/`; React 19.x; project chạy được                                                    | [ĐỀ] + [CN] |
+| 2.1 | Chuẩn bị dữ liệu nhà khoa học       | `SMART_PEOPLE` gồm 6 bản ghi `sp-1` … `sp-6` với `id`, `name`, `age`, `iq`                                                                       | [ĐỀ]        |
+| 2.2 | Xây dựng giao diện danh sách        | `section[aria-label]`, `form role='search'`, `<ul>` với `key={p.id}`; component tại `src/components/ScientistDirectory.jsx`                      | [ĐỀ]        |
+| 2.3 | Xây dựng chức năng Search           | Tìm theo tên, không phân biệt hoa thường, có `trim()`                                                                                            | [ĐỀ]        |
+| 2.4 | Xây dựng chức năng Filter           | Lọc **IQ tối thiểu** bằng `e.target.valueAsNumber`; NaN → 0; mặc định 160                                                                        | [ĐỀ]        |
+| 2.5 | Xây dựng chức năng Sort             | `sortBy`: `iq-desc` (IQ giảm dần) hoặc Age tăng dần, dùng `.toSorted()`. Dạng control chọn sort: [XM]                                            | [ĐỀ] + [XM] |
+| 2.6 | Xây dựng Delete                     | Xóa một mục khỏi state bằng `prev.filter((p) => p.id !== id)`                                                                                    | [ĐỀ]        |
+| 2.7 | Xây dựng Reset                      | Khôi phục toàn bộ danh sách gốc. Nguồn khôi phục là `SMART_PEOPLE` hay prop `initialData`: [XM]                                                  | [ĐỀ] + [XM] |
+| 2.8 | Ràng buộc kỹ thuật (áp dụng từ 2.2) | Không dùng `useEffect` cho lọc/sắp xếp; mọi input có `<label htmlFor>` + `useId()`; số kết quả trong `<output role='status' aria-live='polite'>` | [ĐỀ]        |
 
-Tổng: 11 commits chắc chắn. Message ngoài hai commit ★ là đề xuất, có thể chỉnh.
+State chỉ gồm các giá trị độc lập: `people`, `query`, `minIq`, `sortBy` [ĐỀ]. Không thêm Trash hoặc Permanent Delete [CN].
 
-### 14.2. Chi tiết từng task
+**Tiêu chí hoàn thành:**
 
-**T0 – Kiểm tra môi trường**
+- [ ] Search, Filter, Sort, Delete và Reset hoạt động đúng; kết hợp các thao tác không làm mất điều kiện tìm kiếm hoặc lọc [CN]
+- [ ] React DevTools Profiler: gõ 1 ký tự vào ô tìm kiếm tạo đúng 1 lần render [ĐỀ]
+- [ ] Xóa "Johann Goethe" giữ focus và giữ key của các mục còn lại [ĐỀ]. Vị trí focus mong đợi: [XM]
+- [ ] Không có `useEffect` trong logic lọc/sắp xếp [ĐỀ]
+- [ ] Có 3 commit đúng message bắt buộc (mục 3) [ĐỀ]
 
-- Mục tiêu: biết máy đã có Node, npm, Git; thư mục đã là repo chưa.
-- Lệnh: xem mục 5. Chỉ đọc, không thay đổi gì.
-- Tiêu chí: có kết quả các lệnh; kết quả được ghi vào mục 5.
+### Giai đoạn 3 – Exercise 3: PubgMatchTelemetry
 
-**T1 – Khởi tạo project React 19 + Vite**
+Mọi đường dẫn trong giai đoạn này tính từ `Ex3/`.
 
-- Mục tiêu: project chạy được.
-- File: do template Vite tạo (`package.json`, `vite.config.js`, `index.html`, `src/main.jsx`, `src/App.jsx`, `.gitignore`...).
-- Lệnh cài đặt chỉ chạy sau khi giải thích và được người làm bài đồng ý.
-- Tiêu chí: `npm ls react` cho thấy React 19; `npm run dev` chạy được; `npm run build` thành công.
+| ID  | Nhiệm vụ                           | Kết quả cần đạt                                                                                                                                                                                       | Nguồn              |
+| --- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| 3.0 | Khởi tạo project trong `Ex3/`      | Thực hiện theo phương án đã duyệt ở 0.3, thống nhất với `Ex1/`; React 19.x; project chạy được                                                                                                         | [ĐỀ] + [CN]        |
+| 3.1 | Xác định các trạng thái            | Dữ liệu `PUBG_VN_SQUADS` (CES, TE, GE); state `{ status, data, error }` với `IDLE`, `LOADING`, `SUCCESS`, `ERROR`; component tại `src/components/PubgMatchTelemetry.jsx`                              | [ĐỀ]               |
+| 3.2 | Xây dựng giao diện từng trạng thái | Hiển thị đúng theo state; SUCCESS hiển thị tối thiểu tên đội và kills như contract. Giao diện IDLE: [XM]                                                                                              | [ĐỀ] + [XM]        |
+| 3.3 | Xây dựng Skeleton UI               | Skeleton cao 220px, hiệu ứng pulse, `aria-busy='true'`; CLS 0.00. Dùng CSS Module hay class thường: [XM]                                                                                              | [ĐỀ] + [XM]        |
+| 3.4 | Xử lý yêu cầu bất đồng bộ          | Mô phỏng 35% packet loss cho Erangel/Miramar [ĐỀ]. Cách cài `fetchKraftonPubgTelemetry` (endpoint, schema, độ trễ): đề xuất khi đến Exercise 3, là quyết định cá nhân [CN]. Phạm vi áp dụng 35%: [XM] | [ĐỀ] + [CN] + [XM] |
+| 3.5 | Áp dụng AbortController            | Đổi squad thì effect cleanup gọi `controller.abort()`; `AbortError` được bỏ qua, không hiện lỗi giả                                                                                                   | [ĐỀ]               |
+| 3.6 | Xây dựng Retry                     | Lỗi hiển thị trong `<section role='alert'>`; nút Retry tăng `retryTick` để chạy lại effect; không dùng `alert()`. Nhãn nút (slide ghi 3 cách khác nhau): [XM]                                         | [ĐỀ] + [XM]        |
+| 3.7 | Xây dựng Squad Selector            | Chọn CES / TE / GE để đổi `squadId`. Component nào render selector: [XM]                                                                                                                              | [ĐỀ] + [XM]        |
 
-**T2 – Dọn boilerplate của template**
+**Tiêu chí hoàn thành:**
 
-- File: `src/App.jsx`, `src/App.css`, `src/index.css`, `src/assets/*`, `public/*` (xóa hoặc rút gọn phần demo).
-- Tiêu chí: `npm run build` vẫn thành công; không còn import tới file đã xóa.
+- [ ] Giao diện phản ánh đúng bốn trạng thái [ĐỀ]
+- [ ] DevTools Network "Slow 3G": skeleton không gây layout shift (CLS 0.00) [ĐỀ]
+- [ ] Bấm nhanh CES → TE → GE: request cũ bị hủy, không hiện lỗi giả [ĐỀ]. Cách quan sát "(canceled)" phụ thuộc cách mô phỏng ở 3.4: [XM]
+- [ ] Retry chạy lại request khi lỗi [ĐỀ]
+- [ ] Có 2 commit đúng message bắt buộc (mục 3) [ĐỀ]
 
-**T3 – `project-rules.md`**
+### Giai đoạn 4 – Kiểm thử và hoàn thiện 3 Exercise
 
-- File: `project-rules.md` (bản đã cập nhật theo quyết định).
-- Tiêu chí: khớp các quyết định ở mục 4; không còn câu "đúng hai commit".
+| ID  | Nhiệm vụ                     | Kết quả cần đạt                                                                                                                                              | Nguồn         |
+| --- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
+| 4.1 | Kiểm thử các chức năng       | Các chức năng của Exercise 1, 2, 3 hoạt động                                                                                                                 | [ĐỀ]          |
+| 4.2 | Kiểm tra Responsive 375px    | Không có tràn ngang ở cả 3 Exercise                                                                                                                          | [ĐỀ]          |
+| 4.3 | Kiểm tra Accessibility       | Label liên kết đúng; mục tiêu WCAG 2.2 AA và Lighthouse Accessibility 100                                                                                    | [ĐỀ] (rubric) |
+| 4.4 | Kiểm tra API bị cấm          | Tìm trong `Ex1/src/`, `Ex2/src/`, `Ex3/src/`: class component, `ReactDOM.render`, `defaultProps`, `keyCode`, `alert(`, `dangerouslySetInnerHTML` → 0 kết quả | [ĐỀ] (rubric) |
+| 4.5 | Kiểm tra và sửa lỗi          | Không còn lỗi đã biết ảnh hưởng chức năng; Console không lỗi                                                                                                 | [CN]          |
+| 4.6 | Cập nhật AI_FAILURE_AUDIT.md | Giữ nguyên 2 lỗi đã có; chỉ ghi thêm lỗi AI thực tế phát sinh trong 3 Exercise, ghi ngay khi phát hiện; không tạo lỗi giả, không đặt số lượng tối thiểu      | [CN]          |
+| 4.7 | Kiểm tra Git History         | Đủ 7 commit đúng message bắt buộc [ĐỀ]; mục tiêu cá nhân ít nhất 10 commit có ý nghĩa [CN]; lịch sử cũ được giữ nguyên [CN]                                  | [ĐỀ] + [CN]   |
+| 4.8 | Kiểm tra toàn bộ sản phẩm    | Sẵn sàng nộp                                                                                                                                                 | [CN]          |
 
-**T4 – `TASK_DECOMPOSITION.md`**
+## 3. Commit bắt buộc theo đề
 
-- File: `TASK_DECOMPOSITION.md` (bản này).
-- Tiêu chí: không còn điểm mở chưa được ghi rõ.
+Các message dưới đây giữ nguyên chính xác [ĐỀ]. Chỉ commit sau khi phần việc tương ứng đã được triển khai và kiểm thử [CN].
 
-**T5 – Khung `AI_FAILURE_AUDIT.md`**
+| #   | Exercise | Message                                                            | Nhiệm vụ liên quan                          |
+| --- | -------- | ------------------------------------------------------------------ | ------------------------------------------- |
+| 1   | Ex1      | `feat(ex1): implement semantic DeveloperCard and SkillBadge`       | 1.0, **1.0b (khởi tạo Vite)**, 1.1 – 1.4b   |
+| 2   | Ex1      | `style(ex1): add responsive 375px CSS module`                      | 1.6 – 1.7                                   |
+| 3   | Ex2      | `feat(ex2): normalize smartPeople schema with stable IDs`          | **2.0 (khởi tạo Vite)**, 2.1                |
+| 4   | Ex2      | `feat(ex2): add search, IQ filter & toSorted`                      | 2.2 – 2.5, 2.8                              |
+| 5   | Ex2      | `feat(ex2): add delete/reset & live status`                        | 2.6 – 2.7, 2.8                              |
+| 6   | Ex3      | `feat(ex3): implement PUBG VN 4-state telemetry & AbortController` | **3.0 (khởi tạo Vite)**, 3.1, 3.4, 3.5, 3.7 |
+| 7   | Ex3      | `feat(ex3): add skeleton UI & retry alert`                         | 3.2, 3.3, 3.6                               |
 
-- File: `AI_FAILURE_AUDIT.md` có 5 mục: đề xuất sai, vì sao sai, cách phát hiện, cách khắc phục, bài học.
-- Tiêu chí: không có mục lỗi nào nếu chưa có lỗi thật; lỗi thật được ghi bổ sung khi phát sinh.
+Quy tắc [CN]:
 
-**T6 ★ – `SkillBadge` + `DeveloperCard` + CSS Module tối thiểu**
+- Phần khởi tạo project Vite (1.0b, 2.0, 3.0) được gộp vào commit bắt buộc đầu tiên của Exercise tương ứng; không tạo commit riêng chỉ để khởi tạo project.
+- Ranh giới commit theo các message bắt buộc ở trên; nhiệm vụ nhỏ là đơn vị làm và kiểm tra, không phải đơn vị commit.
+- Commit khác chỉ tạo khi có thay đổi thực tế nằm ngoài các commit bắt buộc; không tạo commit để đạt số lượng.
+- Trước mỗi commit: `git status`, `git diff`, `git add <file>` đúng phạm vi.
+- Quyền commit và push thuộc về người làm bài (mục 1.3).
 
-- File tạo: `src/components/SkillBadge.jsx`, `src/components/DeveloperCard.jsx`, `src/components/DeveloperCard.module.css`.
-- Kết quả: hai component theo slide 14 và các quyết định ở mục 4.
-- Tiêu chí: `npm run build` thành công; hai lệnh grep ở mục 10.1 ra 0 kết quả; metrics dùng `Object.entries()`.
+## 4. Điểm cần xác minh
 
-**T7 – `App` render `<DeveloperCard />`**
+| #   | Điểm                                                                                                                                    | Trạng thái   |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| 1   | Cách tổ chức và khởi tạo `Ex2/`, `Ex3/`: mỗi folder là một project Vite riêng (có `package.json` riêng) hay cách khác; quyết định ở 0.3 | [XM]         |
+| 1b  | Commit chứa phần khởi tạo project (1.0b, 2.0, 3.0): gộp vào commit bắt buộc đầu tiên của Exercise tương ứng, không tạo commit riêng     | Đã chốt [CN] |
+| 2   | Lịch sử đã có commit `feat(ex1): implement semantic DeveloperCard and SkillBadge` của bản cũ; commit mới sẽ trùng message               | [XM]         |
+| 3   | Việc xóa implementation cũ (đã thực hiện, chưa commit) được đưa vào commit `feat(ex1)` mới hay commit riêng                             | [XM]         |
+| 4   | Sau khi khởi tạo: giữ hay dọn các file mẫu của template Vite (CSS toàn cục, asset demo) trong từng Exercise                             | [XM]         |
+| 5   | `.gitignore` hiện bỏ qua `.vscode/*` (trừ `extensions.json`), nên `.vscode/settings.json` sẽ không được Git theo dõi                    | [XM]         |
+| 6   | Ex2: dạng control chọn sort                                                                                                             | [XM]         |
+| 7   | Ex2: Reset khôi phục từ `SMART_PEOPLE` hay `initialData`                                                                                | [XM]         |
+| 8   | Ex2: vị trí focus mong đợi sau khi xóa                                                                                                  | [XM]         |
+| 9   | Ex3: cách mô phỏng `fetchKraftonPubgTelemetry` (endpoint, schema, độ trễ)                                                               | [XM]         |
+| 10  | Ex3: 35% packet loss chỉ áp dụng cho squad ở Erangel/Miramar hay mọi squad                                                              | [XM]         |
+| 11  | Ex3: giao diện trạng thái IDLE                                                                                                          | [XM]         |
+| 12  | Ex3: nhãn nút Retry ("Reconnect Satellite (Retry)", "Reconnect Telemetry", "Reconnect Satellite")                                       | [XM]         |
+| 13  | Ex3: component render squad selector                                                                                                    | [XM]         |
+| 14  | Ex3: skeleton dùng CSS Module hay class thường                                                                                          | [XM]         |
+| 15  | Rubric ghi 6–8 atomic commits, khác mục tiêu cá nhân ít nhất 10; chưa rõ có ảnh hưởng điểm                                              | [XM]         |
 
-- File sửa: `src/App.jsx` (có thể `src/main.jsx` nếu cần).
-- Tiêu chí: card hiển thị với default props; Console không lỗi.
+## 5. Quy tắc theo dõi tiến độ
 
-**T8 – Avatar fallback**
+Mỗi nhiệm vụ có một trong ba trạng thái:
 
-- File sửa: `src/components/DeveloperCard.jsx`, `DeveloperCard.module.css` (chỉ class initials 64×64).
-- Tiêu chí: ba trường hợp ảnh OK / URL rỗng / URL hỏng; tên rỗng ra `?`; layout không nhảy.
+- `[ ]` Chưa thực hiện
+- `[~]` Đang thực hiện
+- `[x]` Hoàn thành và đã kiểm tra
 
-**T9 – Style header và avatar**
+Chỉ đánh dấu hoàn thành khi kết quả đã được kiểm tra, không chỉ khi code đã được viết.
 
-- File sửa: `DeveloperCard.module.css` (CSS Custom Properties, header, avatar, initials).
-- Tiêu chí: ảnh và initials cùng kích thước, cân đối.
+## 6. Nguyên tắc ưu tiên
 
-**T10 – Style metrics và skills**
+1. Hoàn thành các yêu cầu bắt buộc của từng Exercise theo thứ tự Exercise 1 → 2 → 3.
+2. Dành thời gian kiểm thử, sửa lỗi và chuẩn bị nộp.
+3. Phần bổ sung cá nhân (như nhiệm vụ 1.5) chỉ làm khi yêu cầu bắt buộc đã hoàn thành và được đồng ý.
 
-- File sửa: `DeveloperCard.module.css`.
-- Tiêu chí: `<dl>`, `<ul>`, badge đọc rõ trên màn hình rộng.
-
-**T11 ★ – Responsive**
-
-- File sửa: `DeveloperCard.module.css`.
-- Tiêu chí: kiểm tra 375px, 768px, 1440px; không horizontal scroll.
-
-**T12 – Kiểm tra cuối**
-
-- Mục tiêu: bằng chứng cho từng mục ở mục 13.
-- Tiêu chí: mỗi mục có kết quả kiểm tra cụ thể; lỗi tìm thấy được sửa và ghi vào commit phù hợp.
-
-### 14.3. Cách phối hợp (project nằm trên máy người làm bài)
-
-Với mỗi task: trợ lý nêu mục tiêu, file liên quan và cách làm, rồi đưa code hoặc lệnh. Người làm bài tạo hoặc sửa file trong editor, chạy lệnh trên máy mình và gửi kết quả (output, thông báo lỗi, ảnh chụp trình duyệt) để trợ lý review. Trợ lý không tuyên bố một task hoàn thành khi chưa có kết quả kiểm tra do người làm bài cung cấp. Không chuyển sang task tiếp theo khi task hiện tại chưa được kiểm tra.
-
-### 14.4. Quy trình Git với mỗi commit
-
-Trợ lý không chạy `git commit`. Trước mỗi commit:
-
-1. Trợ lý giải thích lệnh sắp dùng.
-2. `git status` để xem file nào đã đổi.
-3. `git diff` (và `git diff --staged` sau khi add) để đọc nội dung thay đổi.
-4. `git add <từng file>`; không dùng `git add .` để tránh kéo theo file không thuộc commit.
-5. Người làm bài xác nhận, rồi tự chạy `git commit -m "..."`.
-6. Cuối cùng: `git log --oneline` để kiểm tra lịch sử.
-
-Lưu ý: các file tài liệu (`project-rules.md`, `TASK_DECOMPOSITION.md`) có thể đã nằm trong thư mục trước khi scaffold. Khi chạy `git status` chúng hiện là untracked; chỉ `git add` các file thuộc đúng commit đang làm.
-
-## 15. Thay đổi so với bản đầu
-
-1. Mục 2.7, 10.4, 11, 13: "đúng hai atomic commits" → từ 10 commits trở lên, trong đó có hai commit bắt buộc.
-2. Mục 2.1, 8: chốt dùng `useState` với `failedUrl`; không còn cảnh báo mâu thuẫn "pure".
-3. Mục 2.4, 6: chốt `name`, `tier`, `<span>`, `name (tier)`, `aria-label="Engineered Skills"`.
-4. Mục 2.5, 8: chốt fallback cho cả hai trường hợp.
-5. Mục 2.6, 6, 9: bỏ "viết CSS riêng nếu cần"; chốt không có `SkillBadge.module.css`; ghi lại yêu cầu thay inline style của slide 18.
-6. Mục 3: chốt một card mặc định.
-7. Mục 4: bảng quyết định thiết kế đã chốt.
-8. Mục 5: đổi thành kiểm tra môi trường trên máy người làm bài (T0).
-9. Mục 10.1: ghi lại hai lệnh grep trên slide 13; không tự tạo script thay giảng viên.
-10. Mục 12, 13: bảng trạng thái, sửa lỗi cú pháp checkbox, thêm tiêu chí cho `SkillBadge`, grep và Git.
-11. Mục 14: thêm kế hoạch task, kế hoạch 11 commits, cách phối hợp và quy trình Git.
+Không bỏ đi chức năng bắt buộc để theo đuổi tính năng bổ sung hoặc giao diện trang trí.

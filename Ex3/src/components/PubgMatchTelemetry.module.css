@@ -1,0 +1,107 @@
+/* Shared card: every state has the same size, so switching states does not shift the layout */
+.idle,
+.skeleton,
+.error,
+.success {
+  --bg: #0d0608;
+  --card: #1a0b0e;
+  --border: #8b1a1f;
+  --accent: #ff5a5f;
+  --glow: rgba(224, 49, 59, 0.45);
+  --text: #f3e9e9;
+  --muted: #b9a3a5;
+
+  box-sizing: border-box;
+  min-height: 220px;
+  margin: 16px 0 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 0 24px var(--glow);
+  overflow-wrap: anywhere;
+}
+
+.idle {
+  color: var(--muted);
+}
+
+/* LOADING skeleton */
+.skeleton {
+  height: 220px;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}
+
+/* SUCCESS */
+.squadName {
+  margin: 0 0 16px;
+  color: var(--accent);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 16px;
+  margin: 0;
+}
+
+.stats dt {
+  color: var(--muted);
+}
+
+.stats dd {
+  margin: 0;
+  color: var(--text);
+}
+
+/* ERROR */
+.error {
+  border-color: var(--accent);
+}
+
+.errorText {
+  margin: 0 0 16px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.retryButton {
+  padding: 10px 18px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--bg);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.retryButton:hover {
+  box-shadow: 0 0 16px var(--glow);
+}
+
+.retryButton:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}

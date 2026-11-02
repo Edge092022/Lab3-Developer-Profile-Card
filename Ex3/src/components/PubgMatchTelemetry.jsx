@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { fetchKraftonPubgTelemetry } from '../api/fetchKraftonPubgTelemetry.js';
+import styles from './PubgMatchTelemetry.module.css';
 
 export function PubgMatchTelemetry({ squadId = 'te' }) {
   const [view, setView] = useState({ status: 'IDLE', data: null, error: null });
+  const [retryTick, setRetryTick] = useState(0);
 
   useEffect(() => {
     if (!squadId) return;
@@ -22,20 +24,31 @@ export function PubgMatchTelemetry({ squadId = 'te' }) {
       });
 
     return () => controller.abort();
-  }, [squadId]);
+  }, [squadId, retryTick]);
 
   if (view.status === 'IDLE') {
-    return <p>Select a squad</p>;
+    return <p className={styles.idle}>Select a squad</p>;
   }
 
   if (view.status === 'LOADING') {
-    return <section aria-busy="true">Syncing KRAFTON Radar...</section>;
+    return (
+      <section className={styles.skeleton} aria-busy="true">
+        Syncing KRAFTON Radar...
+      </section>
+    );
   }
 
   if (view.status === 'ERROR') {
     return (
-      <section>
-        <p>Blue-Zone Link Lost: {view.error}</p>
+      <section className={styles.error} role="alert">
+        <p className={styles.errorText}>Blue-Zone Link Lost: {view.error}</p>
+        <button
+          className={styles.retryButton}
+          type="button"
+          onClick={() => setRetryTick((t) => t + 1)}
+        >
+          Reconnect Satellite
+        </button>
       </section>
     );
   }
@@ -43,9 +56,9 @@ export function PubgMatchTelemetry({ squadId = 'te' }) {
   const squad = view.data;
 
   return (
-    <article aria-live="polite">
-      <h3>{squad.name}</h3>
-      <dl>
+    <article className={styles.success} aria-live="polite">
+      <h3 className={styles.squadName}>{squad.name}</h3>
+      <dl className={styles.stats}>
         <dt>Map</dt>
         <dd>{squad.map}</dd>
         <dt>Zone phase</dt>

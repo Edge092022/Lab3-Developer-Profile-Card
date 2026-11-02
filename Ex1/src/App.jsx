@@ -2,7 +2,9 @@ import { DeveloperCard } from './components/DeveloperCard.jsx';
 
 function App() {
 return (
-  <DeveloperCard />
+  <main>
+    <DeveloperCard />
+  </main>
 );
 }
 

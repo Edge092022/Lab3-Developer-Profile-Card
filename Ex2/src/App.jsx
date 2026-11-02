@@ -1,5 +1,11 @@
+import { ScientistDirectory } from './components/ScientistDirectory.jsx';
+
 function App() {
-  return <main></main>;
+  return (
+    <main>
+      <ScientistDirectory />
+    </main>
+  );
 }
 
 export default App;

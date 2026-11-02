@@ -1,7 +1,10 @@
-import DeveloperCard from './components/DeveloperCard.jsx'
+import { DeveloperCard } from './components/DeveloperCard.jsx';
 
 function App() {
-  return <DeveloperCard />
+return (
+  <DeveloperCard />
+);
 }
 
-export default App
+export default App;
+

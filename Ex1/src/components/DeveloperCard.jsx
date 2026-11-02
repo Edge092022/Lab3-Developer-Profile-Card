@@ -1,74 +1,77 @@
-import { Fragment, useState } from 'react'
-import SkillBadge from './SkillBadge.jsx'
-import styles from './DeveloperCard.module.css'
+import { Fragment, useState } from 'react';
+import { SkillBadge } from './SkillBadge.jsx';
 
-function DeveloperCard({
-  fullName = 'Tran Vinh Khiem',
-  role = 'Senior Systems Architect • UIT S3T',
-  avatarUrl = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=240',
-  metrics = { commits: 512, vdomNodes: 0, a11yScore: 100 },
-  skills = [{ id: 'sk-1', name: 'React 19 Fiber', tier: 'Core' }],
+function getInitials(name) {
+  const trimmedName = name.trim();
+
+  const initials = trimmedName
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => word[0])
+    .join('')
+    .toUpperCase();
+
+  return initials || '?';
+}
+
+export function DeveloperCard({
+  fullName = 'Mori Calliope',
+  role = "hololive English -Myth- • Grim Reaper's First Apprentice",
+  avatarUrl = '/calliope.jpg',
+  metrics = {
+    birthday: 'April 4',
+    debut: 'September 12, 2020',
+    height: '167 cm',
+  },
+  skills = [
+    { id: 'sk-1', name: 'Rap', tier: 'Core' },
+    { id: 'sk-2', name: 'Singing', tier: 'Core' },
+    { id: 'sk-3', name: 'Music Production', tier: 'Advanced' },
+  ],
 }) {
-  const [failedUrl, setFailedUrl] = useState(null)
-  const initials =
-    fullName
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean)
-      .map((word) => Array.from(word)[0])
-      .join('')
-      .toUpperCase() || '?'
-  const hasAvatar =
-    typeof avatarUrl === 'string' &&
-    avatarUrl.startsWith('https://') &&
-    avatarUrl !== failedUrl
+  const [failedUrl, setFailedUrl] = useState('');
+
+  const showFallback = !avatarUrl || failedUrl === avatarUrl;
 
   return (
-    <article className={styles.card} aria-labelledby="dev-heading">
-      <header className={styles.header}>
-        {hasAvatar ? (
+    <article aria-labelledby="dev-heading">
+      <header>
+        {showFallback ? (
+          <span aria-hidden="true">
+            {getInitials(fullName)}
+          </span>
+        ) : (
           <img
-            className={styles.avatar}
             src={avatarUrl}
-            width="64"
-            height="64"
-            alt={`${fullName || 'Developer'} avatar`}
+            alt={fullName}
+            width={64}
+            height={64}
             onError={() => setFailedUrl(avatarUrl)}
           />
-        ) : (
-          <span className={styles.initials} aria-hidden="true">
-            {initials}
-          </span>
         )}
-        <hgroup className={styles.identity}>
-          <p className={styles.eyebrow}>Developer profile</p>
-          <h2 className={styles.name} id="dev-heading">
-            {fullName || 'Unnamed developer'}
-          </h2>
-          <p className={styles.role}>{role}</p>
+
+        <hgroup>
+          <h2 id="dev-heading">{fullName}</h2>
+          <p>{role}</p>
         </hgroup>
       </header>
 
-      <h3 className={styles.sectionTitle}>Field metrics</h3>
-      <dl className={styles.metrics} aria-label="Developer metrics">
+      <dl>
         {Object.entries(metrics).map(([key, value]) => (
           <Fragment key={key}>
-            <dt className={styles.metricLabel}>{key}</dt>
-            <dd className={styles.metricValue}>{value}</dd>
+            <dt>{key}</dt>
+            <dd>{value}</dd>
           </Fragment>
         ))}
       </dl>
 
-      <h3 className={styles.sectionTitle}>Engineered skills</h3>
-      <ul className={styles.skills} aria-label="Engineered Skills">
+      <ul aria-label="Engineered Skills">
         {skills.map((skill) => (
-          <li className={styles.skillItem} key={skill.id}>
+          <li key={skill.id}>
             <SkillBadge name={skill.name} tier={skill.tier} />
           </li>
         ))}
       </ul>
     </article>
-  )
+  );
 }
-
-export default DeveloperCard

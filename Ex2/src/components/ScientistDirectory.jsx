@@ -1,5 +1,6 @@
 import { useId, useRef, useState } from 'react';
 import { SMART_PEOPLE } from '../data/smartPeople.js';
+import styles from './ScientistDirectory.module.css';
 
 export function ScientistDirectory({ initialData = SMART_PEOPLE }) {
   const [people, setPeople] = useState(initialData);
@@ -46,35 +47,49 @@ export function ScientistDirectory({ initialData = SMART_PEOPLE }) {
   }
 
   return (
-    <section aria-label="Pioneer Directory">
-      <form role="search" onSubmit={(e) => e.preventDefault()}>
-        <label htmlFor={nameId}>Name</label>
-        <input
-          id={nameId}
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
+    <section className={styles.directory} aria-label="Pioneer Directory">
+      <form
+        className={styles.form}
+        role="search"
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <p className={styles.field}>
+          <label htmlFor={nameId}>Name</label>
+          <input
+            className={styles.control}
+            id={nameId}
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </p>
 
-        <label htmlFor={minIqId}>Min IQ</label>
-        <input
-          id={minIqId}
-          type="number"
-          value={minIq}
-          onChange={handleMinIqChange}
-        />
+        <p className={styles.field}>
+          <label htmlFor={minIqId}>Min IQ</label>
+          <input
+            className={styles.control}
+            id={minIqId}
+            type="number"
+            value={minIq}
+            onChange={handleMinIqChange}
+          />
+        </p>
 
-        <label htmlFor={sortId}>Sort by</label>
-        <select
-          id={sortId}
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-        >
-          <option value="iq">IQ</option>
-          <option value="age">Age</option>
-        </select>
+        <p className={styles.field}>
+          <label htmlFor={sortId}>Sort by</label>
+          <select
+            className={styles.control}
+            id={sortId}
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+          >
+            <option value="iq">IQ</option>
+            <option value="age">Age</option>
+          </select>
+        </p>
 
         <button
+          className={styles.button}
           type="button"
           onClick={() =>
             setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))
@@ -84,31 +99,39 @@ export function ScientistDirectory({ initialData = SMART_PEOPLE }) {
         </button>
       </form>
 
-      <output role="status" aria-live="polite">
-        Found {visible.length} pioneers
-      </output>
+      <p className={styles.toolbar}>
+        <output className={styles.count} role="status" aria-live="polite">
+          Found {visible.length} pioneers
+        </output>
 
-      <button
-        type="button"
-        ref={deleteModeRef}
-        aria-pressed={isDeleteMode}
-        onClick={() => setIsDeleteMode((prev) => !prev)}
-      >
-        Delete mode
-      </button>
-
-      {deleted.length > 0 && (
-        <button type="button" onClick={handleRestore}>
-          Restore all
+        <button
+          className={styles.button}
+          type="button"
+          ref={deleteModeRef}
+          aria-pressed={isDeleteMode}
+          onClick={() => setIsDeleteMode((prev) => !prev)}
+        >
+          Delete mode
         </button>
-      )}
 
-      <ol>
+        {deleted.length > 0 && (
+          <button
+            className={styles.button}
+            type="button"
+            onClick={handleRestore}
+          >
+            Restore all
+          </button>
+        )}
+      </p>
+
+      <ol className={styles.list}>
         {visible.map((p) => (
-          <li key={p.id}>
+          <li className={styles.item} key={p.id}>
             {p.name} — IQ {p.iq}
             {isDeleteMode && (
               <button
+                className={styles.button}
                 type="button"
                 aria-label={`Delete ${p.name}`}
                 onClick={() => handleDelete(p.id)}
@@ -121,13 +144,14 @@ export function ScientistDirectory({ initialData = SMART_PEOPLE }) {
       </ol>
 
       {deleted.length > 0 && (
-        <section aria-label="Deleted pioneers">
-          <h2>Deleted</h2>
-          <ul>
+        <section className={styles.deleted} aria-label="Deleted pioneers">
+          <h2 className={styles.deletedTitle}>Deleted</h2>
+          <ul className={styles.list}>
             {deleted.map((p) => (
-              <li key={p.id}>
+              <li className={styles.item} key={p.id}>
                 {p.name}
                 <button
+                  className={styles.button}
                   type="button"
                   aria-label={`Restore ${p.name}`}
                   onClick={() => handleRestoreOne(p)}

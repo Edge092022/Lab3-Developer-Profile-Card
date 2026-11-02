@@ -1,0 +1,102 @@
+.directory {
+  /* Colors: same burgundy palette as Ex1 */
+  --dir-accent: #7a263a;      /* burgundy */
+  --dir-accent-dark: #4a1526; /* dark burgundy */
+  --dir-border: #8a6f78;      /* input border, readable in light and dark */
+  --dir-focus: var(--text-h); /* from index.css, flips with the OS theme */
+
+  /* Sizes */
+  --dir-gap: 16px;
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--dir-gap);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 160px;
+  min-width: 0;
+  margin: 0;
+}
+
+.control {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--dir-border);
+  border-radius: 6px;
+  font: inherit;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 24px 0 16px;
+}
+
+.count {
+  margin-right: 8px;
+  font-weight: 600;
+}
+
+.button {
+  padding: 8px 14px;
+  border: 2px solid var(--dir-accent-dark);
+  border-radius: 6px;
+  background: var(--dir-accent);
+  color: #ffffff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.button[aria-pressed='true'] {
+  background: var(--dir-accent-dark);
+}
+
+.button:focus-visible,
+.control:focus-visible {
+  outline: 3px solid var(--dir-focus);
+  outline-offset: 2px;
+}
+
+.list {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.item {
+  padding: 4px 0;
+}
+
+.item .button {
+  margin-left: 8px;
+  padding: 4px 10px;
+}
+
+.deleted {
+  margin-top: 24px;
+}
+
+.deletedTitle {
+  margin: 0 0 8px;
+  font-size: 1.125rem;
+}
+
+@media (max-width: 400px) {
+  .directory {
+    --dir-gap: 12px;
+  }
+}

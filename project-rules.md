@@ -42,7 +42,7 @@
 
 ### 5. Mục tiêu dự án
 
-- Hoàn thành ba Exercise, Homework 3 và bài bonus theo yêu cầu tài liệu Lab 03.
+- Hoàn thành ba Exercise, Homework 1, 2, 3 và bài Bonus theo yêu cầu tài liệu Lab 03.
 - Hiểu và vận dụng các kiến thức React 19.
 - Có khả năng giải thích những quyết định kỹ thuật và cách hoạt động của code.
 
@@ -68,3 +68,43 @@
 - Mục tiêu: ít nhất 10 Git Commits có ý nghĩa.
 - Mỗi commit ghi nhận một phần công việc thực tế.
 - Không tạo commit chỉ để đạt số lượng.
+
+### 9. Ràng buộc kỹ thuật bắt buộc (AI phải tuân thủ)
+
+**API bị cấm:**
+
+- Không dùng `class extends React.Component`; chỉ dùng function component.
+- Không dùng `ReactDOM.render`; mount bằng `createRoot` từ `react-dom/client`, bọc `<StrictMode>`.
+- Không dùng `Component.defaultProps`; dùng ES6 default parameters.
+- Không dùng `import * as React`; chỉ import đúng hook cần dùng.
+- Không dùng `keyCode`/`keypress`; dùng `e.code`.
+- Không dùng `window.alert()`; hiển thị lỗi bằng `role='alert'` hoặc `<output role='status'>`.
+- Không dùng `dangerouslySetInnerHTML`; không dùng URL `http://`.
+
+**HTML Semantic:**
+
+- Không div-soup; ưu tiên `<main>`, `<section>`, `<article>`, `<header>`, `<dl>`/`<dt>`/`<dd>`, `<ul>`/`<li>`, `<output>`, `<Fragment>`.
+- `<button>` luôn có `type='button'` nếu không phải nút submit.
+
+**Form và Accessibility:**
+
+- Mọi `<input>`/`<select>` có `<label htmlFor={id}>` với `id` tạo bằng `useId()`.
+- Input số đọc bằng `e.target.valueAsNumber`, xử lý `NaN`.
+
+**State:**
+
+- Chỉ cập nhật state bất biến (spread, `filter`, `map`, `toSorted`); không `push`, `splice`, `sort` trên state.
+- Dữ liệu suy ra (filter, sort, điểm số, cờ đỏ) tính trực tiếp trong render; không lưu thành state riêng, không đồng bộ bằng `useEffect`.
+- Trạng thái nhiều bước dùng một biến FSM duy nhất, không dùng nhiều boolean mâu thuẫn.
+- `key` trong danh sách phải là ID ổn định, không dùng index.
+
+**Effect:**
+
+- Mọi timer, event listener, fetch hoặc tài nguyên (AudioContext…) trong `useEffect` phải có cleanup (`clearTimeout`, `clearInterval`, `removeEventListener`, `controller.abort()`).
+- Khai báo đầy đủ dependency; không dùng `[]` để né stale closure.
+- Bỏ qua `AbortError`, không hiển thị như lỗi thật.
+
+**Quy trình:**
+
+- Chỉ làm đúng một task trong `TASK_DECOMPOSITION.md` mỗi lần; không tự làm task kế tiếp.
+- Không tự commit hoặc push; chỉ đề xuất commit message.

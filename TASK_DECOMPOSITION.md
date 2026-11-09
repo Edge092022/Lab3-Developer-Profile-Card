@@ -4,13 +4,14 @@
 
 Phân chia Lab 03 thành các giai đoạn và nhiệm vụ nhỏ để dễ triển khai, theo dõi tiến độ và kiểm tra kết quả.
 
-**Phạm vi:** đúng 3 Exercise:
+**Phạm vi:**
 
 - Exercise 1 – DeveloperCard + SkillBadge
 - Exercise 2 – ScientistDirectory
 - Exercise 3 – PubgMatchTelemetry
+- Bonus – SituationshipAnalyzer (bắt buộc làm, không cộng điểm)
 
-Homework 3 và Bonus không thuộc kế hoạch này.
+Homework 1, 2, 3 sẽ được bổ sung thành các giai đoạn riêng trước khi bắt đầu làm.
 
 Nguyên tắc:
 
@@ -41,20 +42,22 @@ Lab3_WD/
 ├── TASK_DECOMPOSITION.md
 ├── Ex1/
 ├── Ex2/
-└── Ex3/
+├── Ex3/
+└── Bonus/
 ```
 
 - Mỗi Exercise có một folder riêng chứa source code và các file cần thiết của Exercise đó.
 - Các tài liệu dự án và cấu hình chung nằm ở thư mục gốc.
 - Đường dẫn trong slide (`src/components/...`) được hiểu là tương đối với folder của Exercise tương ứng:
 
-| Exercise | File chính theo slide                     | Đường dẫn tính từ thư mục gốc                 |
-| -------- | ----------------------------------------- | --------------------------------------------- |
-| Ex1      | `src/components/DeveloperCard.jsx`        | `Ex1/src/components/DeveloperCard.jsx`        |
-| Ex1      | `src/components/DeveloperCard.module.css` | `Ex1/src/components/DeveloperCard.module.css` |
-| Ex1      | `src/components/SkillBadge.jsx`           | `Ex1/src/components/SkillBadge.jsx`           |
-| Ex2      | `src/components/ScientistDirectory.jsx`   | `Ex2/src/components/ScientistDirectory.jsx`   |
-| Ex3      | `src/components/PubgMatchTelemetry.jsx`   | `Ex3/src/components/PubgMatchTelemetry.jsx`   |
+| Exercise | File chính theo slide                      | Đường dẫn tính từ thư mục gốc                    |
+| -------- | ------------------------------------------ | ------------------------------------------------ |
+| Ex1      | `src/components/DeveloperCard.jsx`         | `Ex1/src/components/DeveloperCard.jsx`           |
+| Ex1      | `src/components/DeveloperCard.module.css`  | `Ex1/src/components/DeveloperCard.module.css`    |
+| Ex1      | `src/components/SkillBadge.jsx`            | `Ex1/src/components/SkillBadge.jsx`              |
+| Ex2      | `src/components/ScientistDirectory.jsx`    | `Ex2/src/components/ScientistDirectory.jsx`      |
+| Ex3      | `src/components/PubgMatchTelemetry.jsx`    | `Ex3/src/components/PubgMatchTelemetry.jsx`      |
+| Bonus    | `src/components/SituationshipAnalyzer.jsx` | `Bonus/src/components/SituationshipAnalyzer.jsx` |
 
 ### 1.3. Quyền kiểm soát Git [CN]
 
@@ -75,7 +78,7 @@ Lab3_WD/
 | 0.4 | Kiểm tra `project-rules.md`            | Xác nhận nội dung được giữ nguyên; không chỉnh sửa, bổ sung hoặc viết lại                                                                                                                                                                                  | [CN]        |
 | 0.5 | Hoàn thiện `TASK_DECOMPOSITION.md`     | Tài liệu được người làm bài duyệt                                                                                                                                                                                                                          | [CN]        |
 
-Việc khởi tạo project cho từng Exercise là nhiệm vụ riêng (1.0b, 2.0, 3.0), chỉ thực hiện sau khi phương án ở 0.2 và 0.3 được duyệt [CN].
+Việc khởi tạo project cho từng Exercise là nhiệm vụ riêng (1.0b, 2.0, 3.0, 5.0), chỉ thực hiện sau khi phương án ở 0.2 và 0.3 được duyệt [CN].
 
 **Tiêu chí hoàn thành:**
 
@@ -169,16 +172,49 @@ Mọi đường dẫn trong giai đoạn này tính từ `Ex3/`.
 
 ### Giai đoạn 4 – Kiểm thử và hoàn thiện 3 Exercise
 
-| ID  | Nhiệm vụ                     | Kết quả cần đạt                                                                                                                                              | Nguồn         |
-| --- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
-| 4.1 | Kiểm thử các chức năng       | Các chức năng của Exercise 1, 2, 3 hoạt động                                                                                                                 | [ĐỀ]          |
-| 4.2 | Kiểm tra Responsive 375px    | Không có tràn ngang ở cả 3 Exercise                                                                                                                          | [ĐỀ]          |
-| 4.3 | Kiểm tra Accessibility       | Label liên kết đúng; mục tiêu WCAG 2.2 AA và Lighthouse Accessibility 100                                                                                    | [ĐỀ] (rubric) |
-| 4.4 | Kiểm tra API bị cấm          | Tìm trong `Ex1/src/`, `Ex2/src/`, `Ex3/src/`: class component, `ReactDOM.render`, `defaultProps`, `keyCode`, `alert(`, `dangerouslySetInnerHTML` → 0 kết quả | [ĐỀ] (rubric) |
-| 4.5 | Kiểm tra và sửa lỗi          | Không còn lỗi đã biết ảnh hưởng chức năng; Console không lỗi                                                                                                 | [CN]          |
-| 4.6 | Cập nhật AI_FAILURE_AUDIT.md | Giữ nguyên 2 lỗi đã có; chỉ ghi thêm lỗi AI thực tế phát sinh trong 3 Exercise, ghi ngay khi phát hiện; không tạo lỗi giả, không đặt số lượng tối thiểu      | [CN]          |
-| 4.7 | Kiểm tra Git History         | Đủ 7 commit đúng message bắt buộc [ĐỀ]; mục tiêu cá nhân ít nhất 10 commit có ý nghĩa [CN]; lịch sử cũ được giữ nguyên [CN]                                  | [ĐỀ] + [CN]   |
-| 4.8 | Kiểm tra toàn bộ sản phẩm    | Sẵn sàng nộp                                                                                                                                                 | [CN]          |
+| ID  | Nhiệm vụ                     | Kết quả cần đạt                                                                                                                                                            | Nguồn         |
+| --- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| 4.1 | Kiểm thử các chức năng       | Các chức năng của Exercise 1, 2, 3 hoạt động                                                                                                                               | [ĐỀ]          |
+| 4.2 | Kiểm tra Responsive 375px    | Không có tràn ngang ở cả 3 Exercise                                                                                                                                        | [ĐỀ]          |
+| 4.3 | Kiểm tra Accessibility       | Label liên kết đúng; mục tiêu WCAG 2.2 AA và Lighthouse Accessibility 100                                                                                                  | [ĐỀ] (rubric) |
+| 4.4 | Kiểm tra API bị cấm          | Tìm trong `Ex1/src/`, `Ex2/src/`, `Ex3/src/`, `Bonus/src/`: class component, `ReactDOM.render`, `defaultProps`, `keyCode`, `alert(`, `dangerouslySetInnerHTML` → 0 kết quả | [ĐỀ] (rubric) |
+| 4.5 | Kiểm tra và sửa lỗi          | Không còn lỗi đã biết ảnh hưởng chức năng; Console không lỗi                                                                                                               | [CN]          |
+| 4.6 | Cập nhật AI_FAILURE_AUDIT.md | Giữ nguyên 2 lỗi đã có; chỉ ghi thêm lỗi AI thực tế phát sinh trong 3 Exercise, ghi ngay khi phát hiện; không tạo lỗi giả, không đặt số lượng tối thiểu                    | [CN]          |
+| 4.7 | Kiểm tra Git History         | Đủ 9 commit đúng message bắt buộc [ĐỀ]; mục tiêu cá nhân ít nhất 10 commit có ý nghĩa [CN]; lịch sử cũ được giữ nguyên [CN]                                                | [ĐỀ] + [CN]   |
+| 4.8 | Kiểm tra toàn bộ sản phẩm    | Sẵn sàng nộp                                                                                                                                                               | [CN]          |
+
+### Giai đoạn 5 – Bonus: SituationshipAnalyzer
+
+Mọi đường dẫn trong giai đoạn này tính từ `Bonus/`. Bài bắt buộc làm, không cộng điểm [ĐỀ].
+
+Thiết kế FSM đã chốt [CN]:
+
+| Phase hiện tại | Sự kiện                      | Phase tiếp theo   |
+| -------------- | ---------------------------- | ----------------- |
+| FRIENDS        | Bấm "Bắt đầu hẹn hò"         | DATING_NO_LOVE    |
+| DATING_NO_LOVE | Hai bên nghiêm túc           | OFFICIAL_LOVE     |
+| DATING_NO_LOVE | Timer 5s hết, seen không rep | GHOSTED_EXIT      |
+| DATING_NO_LOVE | Thấy cờ đỏ, bấm "Dừng lại"   | SELF_RESPECT_EXIT |
+| Phase kết thúc | Bấm "Làm lại từ đầu"         | FRIENDS           |
+
+- Tách `GHOSTED_EXIT` và `SELF_RESPECT_EXIT` vì hai nghĩa khác nhau: một bên bị bỏ rơi, một bên chủ động rời đi [CN].
+- Ba phase `OFFICIAL_LOVE`, `GHOSTED_EXIT`, `SELF_RESPECT_EXIT` là phase kết thúc; nút "Làm lại từ đầu" chỉ để demo [CN].
+
+| ID  | Nhiệm vụ                   | Kết quả cần đạt                                                                                                 | Nguồn       |
+| --- | -------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------- |
+| 5.0 | Khởi tạo project `Bonus/`  | Thống nhất với `Ex1/`–`Ex3/`; React 19.x; project chạy được                                                     | [ĐỀ] + [CN] |
+| 5.1 | Mô hình FSM                | Một state `phase` duy nhất theo bảng trên; không dùng boolean `isDating`/`isLoved`                              | [ĐỀ] + [CN] |
+| 5.2 | Derived state bất đối xứng | `myImpact = myTries × 0.1`, `rivalImpact = rivalTries × 50`, `isRedFlag` tính trong render; không `useEffect`   | [ĐỀ]        |
+| 5.3 | Timer ghosting             | `useEffect` chỉ chạy khi phase là `DATING_NO_LOVE`; sau 5s chuyển `GHOSTED_EXIT`; cleanup `clearTimeout`        | [ĐỀ]        |
+| 5.4 | UI và Accessibility        | Input có `<label htmlFor>` + `useId()`; cảnh báo cờ đỏ trong `<output role='status' aria-live='polite'>`; 375px | [ĐỀ]        |
+
+**Tiêu chí hoàn thành:**
+
+- [ ] Không có tổ hợp boolean mâu thuẫn; UI chỉ ở đúng một phase tại mọi thời điểm [ĐỀ]
+- [ ] Đổi phase hoặc unmount trước 5s: timer bị hủy, không chuyển phase sai [ĐỀ]
+- [ ] Không có `useEffect` cho phần tính điểm/cờ đỏ [ĐỀ]
+- [ ] 375px không cuộn ngang [ĐỀ]
+- [ ] Có 2 commit đúng message bắt buộc (mục 3) [ĐỀ]
 
 ## 3. Commit bắt buộc theo đề
 
@@ -193,10 +229,12 @@ Các message dưới đây giữ nguyên chính xác [ĐỀ]. Chỉ commit sau k
 | 5   | Ex2      | `feat(ex2): add delete/reset & live status`                        | 2.6 – 2.7, 2.8                              |
 | 6   | Ex3      | `feat(ex3): implement PUBG VN 4-state telemetry & AbortController` | **3.0 (khởi tạo Vite)**, 3.1, 3.4, 3.5, 3.7 |
 | 7   | Ex3      | `feat(ex3): add skeleton UI & retry alert`                         | 3.2, 3.3, 3.6                               |
+| 8   | Bonus    | `feat(fsm): model HenHoKhongYeu state machine`                     | **5.0 (khởi tạo Vite)**, 5.1                |
+| 9   | Bonus    | `feat(ui): add derived red-flag meter & ghosting cleanup`          | 5.2 – 5.4                                   |
 
 Quy tắc [CN]:
 
-- Phần khởi tạo project Vite (1.0b, 2.0, 3.0) được gộp vào commit bắt buộc đầu tiên của Exercise tương ứng; không tạo commit riêng chỉ để khởi tạo project.
+- Phần khởi tạo project Vite (1.0b, 2.0, 3.0, 5.0) được gộp vào commit bắt buộc đầu tiên của Exercise tương ứng; không tạo commit riêng chỉ để khởi tạo project.
 - Ranh giới commit theo các message bắt buộc ở trên; nhiệm vụ nhỏ là đơn vị làm và kiểm tra, không phải đơn vị commit.
 - Commit khác chỉ tạo khi có thay đổi thực tế nằm ngoài các commit bắt buộc; không tạo commit để đạt số lượng.
 - Trước mỗi commit: `git status`, `git diff`, `git add <file>` đúng phạm vi.

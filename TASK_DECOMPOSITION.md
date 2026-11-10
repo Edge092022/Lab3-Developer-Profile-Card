@@ -194,7 +194,7 @@ Thiết kế FSM đã chốt [CN]:
 | FRIENDS        | Bấm "Bắt đầu hẹn hò"         | DATING_NO_LOVE    |
 | DATING_NO_LOVE | Hai bên nghiêm túc           | OFFICIAL_LOVE     |
 | DATING_NO_LOVE | Timer 5s hết, seen không rep | GHOSTED_EXIT      |
-| DATING_NO_LOVE | Thấy cờ đỏ, bấm "Dừng lại"   | SELF_RESPECT_EXIT |
+| DATING_NO_LOVE | Bấm "Dừng lại" (luôn hiện)   | SELF_RESPECT_EXIT |
 | Phase kết thúc | Bấm "Làm lại từ đầu"         | FRIENDS           |
 
 - Tách `GHOSTED_EXIT` và `SELF_RESPECT_EXIT` vì hai nghĩa khác nhau: một bên bị bỏ rơi, một bên chủ động rời đi [CN].

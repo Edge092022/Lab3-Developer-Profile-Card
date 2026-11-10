@@ -1,0 +1,85 @@
+.card {
+  --accent: #c2185b;
+  --danger: #b71c1c;
+  --ok: #1b5e20;
+  --border: #d0d0d0;
+
+  box-sizing: border-box;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-family: system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.title {
+  margin: 0 0 12px;
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+
+.phase {
+  margin: 0 0 12px;
+}
+
+.meter {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  margin: 0 0 12px;
+}
+
+.meter dd {
+  margin: 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 12px;
+}
+
+.field input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.status {
+  display: block;
+  margin: 0 0 12px;
+  padding: 8px;
+  border-radius: 8px;
+  color: var(--ok);
+  border: 1px solid var(--ok);
+}
+
+.redFlag {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.actions button {
+  min-height: 44px;
+  padding: 8px 14px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

@@ -10,8 +10,9 @@ Phân chia Lab 03 thành các giai đoạn và nhiệm vụ nhỏ để dễ tri
 - Exercise 2 – ScientistDirectory
 - Exercise 3 – PubgMatchTelemetry
 - Bonus – SituationshipAnalyzer (bắt buộc làm, không cộng điểm)
+- Homework 3 – KRAFTON PUBG VN Airdrop Arena
 
-Homework 1, 2, 3 sẽ được bổ sung thành các giai đoạn riêng trước khi bắt đầu làm.
+Homework 1, 2 sẽ được bổ sung thành các giai đoạn riêng trước khi bắt đầu làm.
 
 Nguyên tắc:
 
@@ -43,7 +44,8 @@ Lab3_WD/
 ├── Ex1/
 ├── Ex2/
 ├── Ex3/
-└── Bonus/
+├── Bonus/
+└── HW3/
 ```
 
 - Mỗi Exercise có một folder riêng chứa source code và các file cần thiết của Exercise đó.
@@ -78,7 +80,7 @@ Lab3_WD/
 | 0.4 | Kiểm tra `project-rules.md`            | Xác nhận nội dung được giữ nguyên; không chỉnh sửa, bổ sung hoặc viết lại                                                                                                                                                                                  | [CN]        |
 | 0.5 | Hoàn thiện `TASK_DECOMPOSITION.md`     | Tài liệu được người làm bài duyệt                                                                                                                                                                                                                          | [CN]        |
 
-Việc khởi tạo project cho từng Exercise là nhiệm vụ riêng (1.0b, 2.0, 3.0, 5.0), chỉ thực hiện sau khi phương án ở 0.2 và 0.3 được duyệt [CN].
+Việc khởi tạo project cho từng Exercise là nhiệm vụ riêng (1.0b, 2.0, 3.0, 5.0, 6.0), chỉ thực hiện sau khi phương án ở 0.2 và 0.3 được duyệt [CN].
 
 **Tiêu chí hoàn thành:**
 
@@ -216,6 +218,64 @@ Thiết kế FSM đã chốt [CN]:
 - [ ] 375px không cuộn ngang [ĐỀ]
 - [ ] Có 2 commit đúng message bắt buộc (mục 3) [ĐỀ]
 
+### Giai đoạn 6 – Homework 3: KRAFTON PUBG VN Airdrop Arena
+
+Mọi đường dẫn trong giai đoạn này tính từ `HW3/`. Dữ liệu leaderboard là dữ liệu mới 5 đội theo `PubgVnSquadStanding` (te, ces, ge = Genius Esports, agg, roy); chỉ giữ cách đặt id/tên đội như Exercise 3; điểm số tự đặt [CN].
+
+Thiết kế phase đã chốt [CN]:
+
+| Phase hiện tại | Sự kiện                | Phase tiếp theo |
+| -------------- | ---------------------- | --------------- |
+| WARMUP         | Đồng hồ đếm ngược về 0 | AIRDROP_LIVE    |
+| AIRDROP_LIVE   | Kho về 0               | LOOTED_OUT      |
+| AIRDROP_LIVE   | Hết 5 phút bán         | EXPIRED         |
+
+- Kho về 0 và hết giờ cùng lúc: ưu tiên `EXPIRED`, vì hết giờ là quy tắc chung của cả phiên bán [CN].
+- Thời gian đếm ngược và thời gian bán là hằng số; khi demo rút ngắn còn khoảng 30 giây [CN].
+- Phase được suy ra từ thời gian và kho trong render, không lưu thành state riêng [CN].
+- Mốc hết hạn = `dropEpochMs + SALE_DURATION_MS`; không thêm field mới vào contract [CN].
+- 3 crate, drop lệch giờ nhau để demo nhiều phase cùng lúc; reload trang thì đếm lại từ đầu [CN].
+- Hằng số thời gian đặt chung trong `src/data/crates.js`, sửa tay khi demo; `serverOffsetMs` cố định bằng 0 [CN].
+- Mỗi crate là một `<CrateCard>` gọi hook 2 lần (mốc drop và mốc hết hạn) [CN].
+
+Quyết định cho Claim [CN]:
+
+- Optimistic: bấm Claim thì trừ kho trên UI ngay, rồi mới gửi request.
+- Khóa nút khi đang chờ server (in-flight lock) theo từng crate: nhiều crate có thể claim song song, mỗi crate tối đa một request.
+- Cha giữ mảng `crates` (cập nhật bằng `map`); `CrateCard` giữ `claimStatus`: `'IDLE' | 'PENDING' | 'CLAIMED'`, không dùng 2 boolean.
+- Mỗi crate claim thành công tối đa 1 lần, sau đó hiện "Đã nhận"; server trả thành công sau khi đã `EXPIRED` vẫn tính "Đã nhận".
+- Quản lý bằng `useState`, không dùng `useOptimistic`, để tự viết và giải thích được rollback.
+- Server giả lập (`src/api/fakeClaimServer.js`) giữ kho riêng, dùng chung nguồn `CRATES` với UI: trễ khoảng 1 giây, còn hàng thì 35% trả 409 (đồng bộ với Exercise 3), kho về 0 thì luôn trả 409.
+- Nhận 409: rollback bằng updater cộng lại 1, hiện thông báo trong `role='alert'`.
+- Unmount: `AbortController` hủy request, bỏ qua `AbortError`. Không rollback khi unmount giữa chừng vì crate chỉ unmount cùng cả app [CN].
+
+Quyết định UI và file [CN]:
+
+- Đồng hồ hiển thị bằng `<time>`, không đặt trong `aria-live`; `<output role='status'>` chỉ báo khi đổi phase và kết quả claim.
+- Leaderboard: `<select>` có label; mọi tiêu chí sắp giảm dần; bằng điểm thì xếp theo Kill rồi theo tên; có cột hạng (#).
+- File: `src/hooks/usePubgAirdropTimer.js`, `src/data/crates.js`, `src/data/standings.js`, `src/api/fakeClaimServer.js`, `src/components/AirdropArena.jsx`, `CrateCard.jsx`, `PvsLeaderboard.jsx`, mỗi component kèm một `.module.css`.
+- Không làm Virtual Scroller (5 đội không cần).
+
+| ID  | Nhiệm vụ                         | Kết quả cần đạt                                                                                                                                | Nguồn       |
+| --- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 6.0 | Khởi tạo project `HW3/`          | Thống nhất với các Exercise; React 19.x; chạy được                                                                                             | [ĐỀ] + [CN] |
+| 6.1 | Hook đếm ngược chống trôi        | `usePubgAirdropTimer(targetEpochMs)` tính `target - Date.now()`; có `visibilitychange` để đồng bộ khi mở lại tab; cleanup interval và listener | [ĐỀ]        |
+| 6.2 | Phase airdrop                    | 4 phase theo bảng trên, suy ra từ thời gian còn lại và kho                                                                                     | [ĐỀ] + [CN] |
+| 6.3 | Claim optimistic và rollback 409 | Trừ kho ngay, khóa nút khi chờ, rollback khi 409; giá hiển thị bằng `Intl.NumberFormat('vi-VN')` (VND)                                         | [ĐỀ] + [CN] |
+| 6.4 | Leaderboard                      | Tìm theo tên đội; sắp xếp theo Tổng điểm (mặc định), WWCD, Placement, Kill bằng `.toSorted()`; Tổng điểm là derived state                      | [ĐỀ] + [CN] |
+| 6.5 | UI và Accessibility              | Input có `<label htmlFor>` + `useId()`; trạng thái trong `<output role='status'>`; lỗi trong `role='alert'`; 375px                             | [ĐỀ]        |
+| 6.6 | Đo performance                   | So sánh thời gian từ lúc bấm Claim tới lúc số vé đổi: optimistic và chờ server. Thao tác đo: [XM]                                              | [CN] + [XM] |
+
+**Tiêu chí hoàn thành:**
+
+- [ ] Ẩn tab 1–2 phút rồi mở lại: đồng hồ vẫn đúng giờ, không bị trôi [ĐỀ]
+- [ ] Bấm Claim: số vé đổi ngay; nút bị khóa khi đang chờ [ĐỀ] + [CN]
+- [ ] Nhận 409: số vé trả lại đúng giá trị cũ, có thông báo [ĐỀ]
+- [ ] Gõ 1 ký tự vào ô tìm: đúng 1 lần render (Profiler); không `useEffect` cho lọc/sắp xếp [ĐỀ]
+- [ ] Mọi timer/listener có cleanup [ĐỀ]
+- [ ] 375px không cuộn ngang; Lighthouse Accessibility 100 [ĐỀ]
+- [ ] Ghi lỗi AI thực tế phát sinh vào `AI_FAILURE_AUDIT.md` [ĐỀ]
+
 ## 3. Commit bắt buộc theo đề
 
 Các message dưới đây giữ nguyên chính xác [ĐỀ]. Chỉ commit sau khi phần việc tương ứng đã được triển khai và kiểm thử [CN].
@@ -231,96 +291,15 @@ Các message dưới đây giữ nguyên chính xác [ĐỀ]. Chỉ commit sau k
 | 7   | Ex3      | `feat(ex3): add skeleton UI & retry alert`                         | 3.2, 3.3, 3.6                               |
 | 8   | Bonus    | `feat(fsm): model HenHoKhongYeu state machine`                     | **5.0 (khởi tạo Vite)**, 5.1                |
 | 9   | Bonus    | `feat(ui): add derived red-flag meter & ghosting cleanup`          | 5.2 – 5.4                                   |
+| 10  | HW3      | `feat(hw3): add anti-drift airdrop timer hook`                     | **6.0 (khởi tạo Vite)**, 6.1, 6.2           |
+| 11  | HW3      | `feat(hw3): add optimistic claim with 409 rollback`                | 6.3                                         |
+| 12  | HW3      | `feat(hw3): add PVS leaderboard filter & sort`                     | 6.4, 6.5                                    |
 
-### Giai đoạn 6 – Homework 3: KRAFTON PUBG VN Airdrop Arena
+Commit 10–12 do người làm bài tự đặt vì slide không cho sẵn message cho HW3 [CN].
 
-Mọi đường dẫn trong giai đoạn này tính từ `HW3/`. Dữ liệu squad dùng lại từ Exercise 3 [ĐỀ].
+Quy tắc [CN]:
 
-Thiết kế phase đã chốt [CN]:
-
-| Phase hiện tại | Sự kiện                | Phase tiếp theo |
-| -------------- | ---------------------- | --------------- |
-| WARMUP         | Đồng hồ đếm ngược về 0 | AIRDROP_LIVE    |
-| AIRDROP_LIVE   | Kho về 0               | LOOTED_OUT      |
-| AIRDROP_LIVE   | Hết 5 phút bán         | EXPIRED         |
-
-- Kho về 0 và hết giờ cùng lúc: ưu tiên `EXPIRED`, vì hết giờ là quy tắc chung của cả phiên bán [CN].
-- Thời gian đếm ngược và thời gian bán là hằng số; khi demo rút ngắn còn khoảng 30 giây [CN].
-- Phase được suy ra từ thời gian và kho trong render, không lưu thành state riêng [CN].
-
-Quyết định cho Claim [CN]:
-
-- Optimistic: bấm Claim thì trừ kho trên UI ngay, rồi mới gửi request.
-- Khóa nút khi đang chờ server (in-flight lock); mỗi lúc chỉ một request, để rollback luôn chính xác.
-- Server giả lập: trễ khoảng 1 giây, 35% trả 409 (đồng bộ với Exercise 3); kho về 0 thì luôn trả 409.
-- Nhận 409: rollback về số kho cũ và hiện thông báo trong `role='alert'`.
-
-| ID  | Nhiệm vụ                         | Kết quả cần đạt                                                                                                                                | Nguồn       |
-| --- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 6.0 | Khởi tạo project `HW3/`          | Thống nhất với các Exercise; React 19.x; chạy được                                                                                             | [ĐỀ] + [CN] |
-| 6.1 | Hook đếm ngược chống trôi        | `usePubgAirdropTimer(targetEpochMs)` tính `target - Date.now()`; có `visibilitychange` để đồng bộ khi mở lại tab; cleanup interval và listener | [ĐỀ]        |
-| 6.2 | Phase airdrop                    | 4 phase theo bảng trên, suy ra từ thời gian còn lại và kho                                                                                     | [ĐỀ] + [CN] |
-| 6.3 | Claim optimistic và rollback 409 | Trừ kho ngay, khóa nút khi chờ, rollback khi 409; giá hiển thị bằng `Intl.NumberFormat('vi-VN')` (VND)                                         | [ĐỀ] + [CN] |
-| 6.4 | Leaderboard                      | Tìm theo tên đội; sắp xếp theo Tổng điểm (mặc định), WWCD, Placement, Kill bằng `.toSorted()`; Tổng điểm là derived state                      | [ĐỀ] + [CN] |
-| 6.5 | UI và Accessibility              | Input có `<label htmlFor>` + `useId()`; trạng thái trong `<output role='status'>`; lỗi trong `role='alert'`; 375px                             | [ĐỀ]        |
-| 6.6 | Đo performance                   | So sánh thời gian từ lúc bấm Claim tới lúc số vé đổi: optimistic và chờ server. Thao tác đo: [XM]                                              | [CN] + [XM] |
-
-**Tiêu chí hoàn thành:**
-
-- [ ] Ẩn tab 1–2 phút rồi mở lại: đồng hồ vẫn đúng giờ, không bị trôi [ĐỀ]
-- [ ] Bấm Claim: số vé đổi ngay; nút bị khóa khi đang chờ [ĐỀ] + [CN]
-- [ ] Nhận 409: số vé trả lại đúng giá trị cũ, có thông báo [ĐỀ]
-- [ ] Gõ 1 ký tự vào ô tìm: đúng 1 lần render (Profiler); không `useEffect` cho lọc/sắp xếp [ĐỀ]
-- [ ] Mọi timer/listener có cleanup [ĐỀ]
-- [ ] 375px không cuộn ngang; Lighthouse Accessibility 100 [ĐỀ]
-- [ ] Ghi lỗi AI thực tế phát sinh vào `AI_FAILURE_AUDIT.md` [ĐỀ]
-      Quy tắc [CN]: ### Giai đoạn 6 – Homework 3: KRAFTON PUBG VN Airdrop Arena
-
-Mọi đường dẫn trong giai đoạn này tính từ `HW3/`. Dữ liệu squad dùng lại từ Exercise 3 [ĐỀ].
-
-Thiết kế phase đã chốt [CN]:
-
-| Phase hiện tại | Sự kiện                | Phase tiếp theo |
-| -------------- | ---------------------- | --------------- |
-| WARMUP         | Đồng hồ đếm ngược về 0 | AIRDROP_LIVE    |
-| AIRDROP_LIVE   | Kho về 0               | LOOTED_OUT      |
-| AIRDROP_LIVE   | Hết 5 phút bán         | EXPIRED         |
-
-- Kho về 0 và hết giờ cùng lúc: ưu tiên `EXPIRED`, vì hết giờ là quy tắc chung của cả phiên bán [CN].
-- Thời gian đếm ngược và thời gian bán là hằng số; khi demo rút ngắn còn khoảng 30 giây [CN].
-- Phase được suy ra từ thời gian và kho trong render, không lưu thành state riêng [CN].
-
-Quyết định cho Claim [CN]:
-
-- Optimistic: bấm Claim thì trừ kho trên UI ngay, rồi mới gửi request.
-- Khóa nút khi đang chờ server (in-flight lock); mỗi lúc chỉ một request, để rollback luôn chính xác.
-- Server giả lập: trễ khoảng 1 giây, 35% trả 409 (đồng bộ với Exercise 3); kho về 0 thì luôn trả 409.
-- Nhận 409: rollback về số kho cũ và hiện thông báo trong `role='alert'`.
-
-| ID  | Nhiệm vụ                         | Kết quả cần đạt                                                                                                                                | Nguồn       |
-| --- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 6.0 | Khởi tạo project `HW3/`          | Thống nhất với các Exercise; React 19.x; chạy được                                                                                             | [ĐỀ] + [CN] |
-| 6.1 | Hook đếm ngược chống trôi        | `usePubgAirdropTimer(targetEpochMs)` tính `target - Date.now()`; có `visibilitychange` để đồng bộ khi mở lại tab; cleanup interval và listener | [ĐỀ]        |
-| 6.2 | Phase airdrop                    | 4 phase theo bảng trên, suy ra từ thời gian còn lại và kho                                                                                     | [ĐỀ] + [CN] |
-| 6.3 | Claim optimistic và rollback 409 | Trừ kho ngay, khóa nút khi chờ, rollback khi 409; giá hiển thị bằng `Intl.NumberFormat('vi-VN')` (VND)                                         | [ĐỀ] + [CN] |
-| 6.4 | Leaderboard                      | Tìm theo tên đội; sắp xếp theo Tổng điểm (mặc định), WWCD, Placement, Kill bằng `.toSorted()`; Tổng điểm là derived state                      | [ĐỀ] + [CN] |
-| 6.5 | UI và Accessibility              | Input có `<label htmlFor>` + `useId()`; trạng thái trong `<output role='status'>`; lỗi trong `role='alert'`; 375px                             | [ĐỀ]        |
-| 6.6 | Đo performance                   | So sánh thời gian từ lúc bấm Claim tới lúc số vé đổi: optimistic và chờ server. Thao tác đo: [XM]                                              | [CN] + [XM] |
-
-**Tiêu chí hoàn thành:**
-
-- [ ] Ẩn tab 1–2 phút rồi mở lại: đồng hồ vẫn đúng giờ, không bị trôi [ĐỀ]
-- [ ] Bấm Claim: số vé đổi ngay; nút bị khóa khi đang chờ [ĐỀ] + [CN]
-- [ ] Nhận 409: số vé trả lại đúng giá trị cũ, có thông báo [ĐỀ]
-- [ ] Gõ 1 ký tự vào ô tìm: đúng 1 lần render (Profiler); không `useEffect` cho lọc/sắp xếp [ĐỀ]
-- [ ] Mọi timer/listener có cleanup [ĐỀ]
-- [ ] 375px không cuộn ngang; Lighthouse Accessibility 100 [ĐỀ]
-- [ ] Ghi lỗi AI thực tế phát sinh vào `AI_FAILURE_AUDIT.md` [ĐỀ]
-      | 10 | HW3 | `feat(hw3): add anti-drift airdrop timer hook` | **6.0 (khởi tạo Vite)**, 6.1, 6.2 |
-      | 11 | HW3 | `feat(hw3): add optimistic claim with 409 rollback` | 6.3 |
-      | 12 | HW3 | `feat(hw3): add PVS leaderboard filter & sort` | 6.4, 6.5 |
-
-- Phần khởi tạo project Vite (1.0b, 2.0, 3.0, 5.0) được gộp vào commit bắt buộc đầu tiên của Exercise tương ứng; không tạo commit riêng chỉ để khởi tạo project.
+- Phần khởi tạo project Vite (1.0b, 2.0, 3.0, 5.0, 6.0) được gộp vào commit bắt buộc đầu tiên của Exercise tương ứng; không tạo commit riêng chỉ để khởi tạo project.
 - Ranh giới commit theo các message bắt buộc ở trên; nhiệm vụ nhỏ là đơn vị làm và kiểm tra, không phải đơn vị commit.
 - Commit khác chỉ tạo khi có thay đổi thực tế nằm ngoài các commit bắt buộc; không tạo commit để đạt số lượng.
 - Trước mỗi commit: `git status`, `git diff`, `git add <file>` đúng phạm vi.

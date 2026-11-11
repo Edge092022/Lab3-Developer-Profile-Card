@@ -11,8 +11,7 @@ Phân chia Lab 03 thành các giai đoạn và nhiệm vụ nhỏ để dễ tri
 - Exercise 3 – PubgMatchTelemetry
 - Bonus – SituationshipAnalyzer (bắt buộc làm, không cộng điểm)
 - Homework 3 – KRAFTON PUBG VN Airdrop Arena
-
-Homework 1, 2 sẽ được bổ sung thành các giai đoạn riêng trước khi bắt đầu làm.
+  Homework 1, 2 sẽ được bổ sung thành các giai đoạn riêng trước khi bắt đầu làm.
 
 Nguyên tắc:
 
@@ -51,15 +50,14 @@ Lab3_WD/
 - Mỗi Exercise có một folder riêng chứa source code và các file cần thiết của Exercise đó.
 - Các tài liệu dự án và cấu hình chung nằm ở thư mục gốc.
 - Đường dẫn trong slide (`src/components/...`) được hiểu là tương đối với folder của Exercise tương ứng:
-
-| Exercise | File chính theo slide                      | Đường dẫn tính từ thư mục gốc                    |
-| -------- | ------------------------------------------ | ------------------------------------------------ |
-| Ex1      | `src/components/DeveloperCard.jsx`         | `Ex1/src/components/DeveloperCard.jsx`           |
-| Ex1      | `src/components/DeveloperCard.module.css`  | `Ex1/src/components/DeveloperCard.module.css`    |
-| Ex1      | `src/components/SkillBadge.jsx`            | `Ex1/src/components/SkillBadge.jsx`              |
-| Ex2      | `src/components/ScientistDirectory.jsx`    | `Ex2/src/components/ScientistDirectory.jsx`      |
-| Ex3      | `src/components/PubgMatchTelemetry.jsx`    | `Ex3/src/components/PubgMatchTelemetry.jsx`      |
-| Bonus    | `src/components/SituationshipAnalyzer.jsx` | `Bonus/src/components/SituationshipAnalyzer.jsx` |
+  | Exercise | File chính theo slide | Đường dẫn tính từ thư mục gốc |
+  | -------- | ------------------------------------------ | ------------------------------------------------ |
+  | Ex1 | `src/components/DeveloperCard.jsx` | `Ex1/src/components/DeveloperCard.jsx` |
+  | Ex1 | `src/components/DeveloperCard.module.css` | `Ex1/src/components/DeveloperCard.module.css` |
+  | Ex1 | `src/components/SkillBadge.jsx` | `Ex1/src/components/SkillBadge.jsx` |
+  | Ex2 | `src/components/ScientistDirectory.jsx` | `Ex2/src/components/ScientistDirectory.jsx` |
+  | Ex3 | `src/components/PubgMatchTelemetry.jsx` | `Ex3/src/components/PubgMatchTelemetry.jsx` |
+  | Bonus | `src/components/SituationshipAnalyzer.jsx` | `Bonus/src/components/SituationshipAnalyzer.jsx` |
 
 ### 1.3. Quyền kiểm soát Git [CN]
 
@@ -113,8 +111,7 @@ Chi tiết đã chốt cho Exercise 1 [CN]:
 - Metrics dùng `Object.entries(metrics)` và `<Fragment key={k}>` bọc cặp `<dt>`/`<dd>`; giữ nguyên key làm nhãn.
 - Initials: chữ đầu mọi từ của `fullName` (`Tran Vinh Khiem` → `TVK`); tên rỗng → `?`; `<span aria-hidden="true">` kích thước 64×64.
 - Logic avatar nằm trong `DeveloperCard`, không tạo component `Avatar` riêng.
-
-**Tiêu chí hoàn thành** (các lệnh chạy trong `Ex1/`):
+  **Tiêu chí hoàn thành** (các lệnh chạy trong `Ex1/`):
 
 - [ ] `grep -n '<div' src/components/DeveloperCard.jsx` → 0 kết quả [ĐỀ]
 - [ ] `grep -n 'http://' src/components/DeveloperCard.jsx` → 0 kết quả [ĐỀ]
@@ -201,14 +198,13 @@ Thiết kế FSM đã chốt [CN]:
 
 - Tách `GHOSTED_EXIT` và `SELF_RESPECT_EXIT` vì hai nghĩa khác nhau: một bên bị bỏ rơi, một bên chủ động rời đi [CN].
 - Ba phase `OFFICIAL_LOVE`, `GHOSTED_EXIT`, `SELF_RESPECT_EXIT` là phase kết thúc; nút "Làm lại từ đầu" chỉ để demo [CN].
-
-| ID  | Nhiệm vụ                   | Kết quả cần đạt                                                                                                 | Nguồn       |
-| --- | -------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------- |
-| 5.0 | Khởi tạo project `Bonus/`  | Thống nhất với `Ex1/`–`Ex3/`; React 19.x; project chạy được                                                     | [ĐỀ] + [CN] |
-| 5.1 | Mô hình FSM                | Một state `phase` duy nhất theo bảng trên; không dùng boolean `isDating`/`isLoved`                              | [ĐỀ] + [CN] |
-| 5.2 | Derived state bất đối xứng | `myImpact = myTries × 0.1`, `rivalImpact = rivalTries × 50`, `isRedFlag` tính trong render; không `useEffect`   | [ĐỀ]        |
-| 5.3 | Timer ghosting             | `useEffect` chỉ chạy khi phase là `DATING_NO_LOVE`; sau 5s chuyển `GHOSTED_EXIT`; cleanup `clearTimeout`        | [ĐỀ]        |
-| 5.4 | UI và Accessibility        | Input có `<label htmlFor>` + `useId()`; cảnh báo cờ đỏ trong `<output role='status' aria-live='polite'>`; 375px | [ĐỀ]        |
+  | ID | Nhiệm vụ | Kết quả cần đạt | Nguồn |
+  | --- | -------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------- |
+  | 5.0 | Khởi tạo project `Bonus/` | Thống nhất với `Ex1/`–`Ex3/`; React 19.x; project chạy được | [ĐỀ] + [CN] |
+  | 5.1 | Mô hình FSM | Một state `phase` duy nhất theo bảng trên; không dùng boolean `isDating`/`isLoved` | [ĐỀ] + [CN] |
+  | 5.2 | Derived state bất đối xứng | `myImpact = myTries × 0.1`, `rivalImpact = rivalTries × 50`, `isRedFlag` tính trong render; không `useEffect` | [ĐỀ] |
+  | 5.3 | Timer ghosting | `useEffect` chỉ chạy khi phase là `DATING_NO_LOVE`; sau 5s chuyển `GHOSTED_EXIT`; cleanup `clearTimeout` | [ĐỀ] |
+  | 5.4 | UI và Accessibility | Input có `<label htmlFor>` + `useId()`; cảnh báo cờ đỏ trong `<output role='status' aria-live='polite'>`; 375px | [ĐỀ] |
 
 **Tiêu chí hoàn thành:**
 
@@ -237,8 +233,7 @@ Thiết kế phase đã chốt [CN]:
 - 3 crate, drop lệch giờ nhau để demo nhiều phase cùng lúc; reload trang thì đếm lại từ đầu [CN].
 - Hằng số thời gian đặt chung trong `src/data/crates.js`, sửa tay khi demo; `serverOffsetMs` cố định bằng 0 [CN].
 - Mỗi crate là một `<CrateCard>` gọi hook 2 lần (mốc drop và mốc hết hạn) [CN].
-
-Quyết định cho Claim [CN]:
+  Quyết định cho Claim [CN]:
 
 - Optimistic: bấm Claim thì trừ kho trên UI ngay, rồi mới gửi request.
 - Khóa nút khi đang chờ server (in-flight lock) theo từng crate: nhiều crate có thể claim song song, mỗi crate tối đa một request.
@@ -248,23 +243,21 @@ Quyết định cho Claim [CN]:
 - Server giả lập (`src/api/fakeClaimServer.js`) giữ kho riêng, dùng chung nguồn `CRATES` với UI: trễ khoảng 1 giây, còn hàng thì 35% trả 409 (đồng bộ với Exercise 3), kho về 0 thì luôn trả 409.
 - Nhận 409: rollback bằng updater cộng lại 1, hiện thông báo trong `role='alert'`.
 - Unmount: `AbortController` hủy request, bỏ qua `AbortError`. Không rollback khi unmount giữa chừng vì crate chỉ unmount cùng cả app [CN].
-
-Quyết định UI và file [CN]:
+  Quyết định UI và file [CN]:
 
 - Đồng hồ hiển thị bằng `<time>`, không đặt trong `aria-live`; `<output role='status'>` chỉ báo khi đổi phase và kết quả claim.
 - Leaderboard: `<select>` có label; mọi tiêu chí sắp giảm dần; bằng điểm thì xếp theo Kill rồi theo tên; có cột hạng (#).
 - File: `src/hooks/usePubgAirdropTimer.js`, `src/data/crates.js`, `src/data/standings.js`, `src/api/fakeClaimServer.js`, `src/components/AirdropArena.jsx`, `CrateCard.jsx`, `PvsLeaderboard.jsx`, mỗi component kèm một `.module.css`.
 - Không làm Virtual Scroller (5 đội không cần).
-
-| ID  | Nhiệm vụ                         | Kết quả cần đạt                                                                                                                                | Nguồn       |
-| --- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 6.0 | Khởi tạo project `HW3/`          | Thống nhất với các Exercise; React 19.x; chạy được                                                                                             | [ĐỀ] + [CN] |
-| 6.1 | Hook đếm ngược chống trôi        | `usePubgAirdropTimer(targetEpochMs)` tính `target - Date.now()`; có `visibilitychange` để đồng bộ khi mở lại tab; cleanup interval và listener | [ĐỀ]        |
-| 6.2 | Phase airdrop                    | 4 phase theo bảng trên, suy ra từ thời gian còn lại và kho                                                                                     | [ĐỀ] + [CN] |
-| 6.3 | Claim optimistic và rollback 409 | Trừ kho ngay, khóa nút khi chờ, rollback khi 409; giá hiển thị bằng `Intl.NumberFormat('vi-VN')` (VND)                                         | [ĐỀ] + [CN] |
-| 6.4 | Leaderboard                      | Tìm theo tên đội; sắp xếp theo Tổng điểm (mặc định), WWCD, Placement, Kill bằng `.toSorted()`; Tổng điểm là derived state                      | [ĐỀ] + [CN] |
-| 6.5 | UI và Accessibility              | Input có `<label htmlFor>` + `useId()`; trạng thái trong `<output role='status'>`; lỗi trong `role='alert'`; 375px                             | [ĐỀ]        |
-| 6.6 | Đo performance                   | So sánh thời gian từ lúc bấm Claim tới lúc số vé đổi: optimistic và chờ server. Thao tác đo: [XM]                                              | [CN] + [XM] |
+  | ID | Nhiệm vụ | Kết quả cần đạt | Nguồn |
+  | --- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+  | 6.0 | Khởi tạo project `HW3/` | Thống nhất với các Exercise; React 19.x; chạy được | [ĐỀ] + [CN] |
+  | 6.1 | Hook đếm ngược chống trôi | `usePubgAirdropTimer(targetEpochMs)` tính `target - Date.now()`; có `visibilitychange` để đồng bộ khi mở lại tab; cleanup interval và listener | [ĐỀ] |
+  | 6.2 | Phase airdrop | 4 phase theo bảng trên, suy ra từ thời gian còn lại và kho | [ĐỀ] + [CN] |
+  | 6.3 | Claim optimistic và rollback 409 | Trừ kho ngay, khóa nút khi chờ, rollback khi 409; giá hiển thị bằng `Intl.NumberFormat('vi-VN')` (VND) | [ĐỀ] + [CN] |
+  | 6.4 | Leaderboard | Tìm theo tên đội; sắp xếp theo Tổng điểm (mặc định), WWCD, Placement, Kill bằng `.toSorted()`; Tổng điểm là derived state | [ĐỀ] + [CN] |
+  | 6.5 | UI và Accessibility | Input có `<label htmlFor>` + `useId()`; trạng thái trong `<output role='status'>`; lỗi trong `role='alert'`; 375px | [ĐỀ] |
+  | 6.6 | Đo performance | So sánh thời gian từ lúc bấm Claim tới lúc số vé đổi: optimistic và chờ server. Thao tác đo: [XM] | [CN] + [XM] |
 
 **Tiêu chí hoàn thành:**
 
@@ -333,13 +326,11 @@ Mỗi nhiệm vụ có một trong ba trạng thái:
 - `[ ]` Chưa thực hiện
 - `[~]` Đang thực hiện
 - `[x]` Hoàn thành và đã kiểm tra
-
-Chỉ đánh dấu hoàn thành khi kết quả đã được kiểm tra, không chỉ khi code đã được viết.
+  Chỉ đánh dấu hoàn thành khi kết quả đã được kiểm tra, không chỉ khi code đã được viết.
 
 ## 6. Nguyên tắc ưu tiên
 
 1. Hoàn thành các yêu cầu bắt buộc của từng Exercise theo thứ tự Exercise 1 → 2 → 3.
 2. Dành thời gian kiểm thử, sửa lỗi và chuẩn bị nộp.
 3. Phần bổ sung cá nhân (như nhiệm vụ 1.5) chỉ làm khi yêu cầu bắt buộc đã hoàn thành và được đồng ý.
-
-Không bỏ đi chức năng bắt buộc để theo đuổi tính năng bổ sung hoặc giao diện trang trí.
+   Không bỏ đi chức năng bắt buộc để theo đuổi tính năng bổ sung hoặc giao diện trang trí.

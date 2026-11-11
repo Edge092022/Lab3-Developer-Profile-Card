@@ -12,6 +12,7 @@ Phân chia Lab 03 thành các giai đoạn và nhiệm vụ nhỏ để dễ tri
 - Bonus – SituationshipAnalyzer (bắt buộc làm, không cộng điểm)
 - Homework 3 – KRAFTON PUBG VN Airdrop Arena
 - Homework 1 – Taiko Drum Kit
+- Homework 2 – Midnight Concert Piano 88
   Homework 1, 2 sẽ được bổ sung thành các giai đoạn riêng trước khi bắt đầu làm.
 
 Nguyên tắc:
@@ -46,7 +47,8 @@ Lab3_WD/
 ├── Ex3/
 ├── Bonus/
 ├── HW3/
-└── HW1/
+├── HW1/
+└── HW2/
 ```
 
 - Mỗi Exercise có một folder riêng chứa source code và các file cần thiết của Exercise đó.
@@ -308,6 +310,36 @@ Quyết định [CN]:
 - [ ] Không còn `keyCode`; mọi listener/timer/AudioContext có cleanup [ĐỀ]
 - [ ] 375px không cuộn ngang; Lighthouse Accessibility 100 [ĐỀ]
 
+### Giai đoạn 8 – Homework 2: Midnight Concert Piano 88
+
+Mọi đường dẫn trong giai đoạn này tính từ `HW2/` [ĐỀ: 88 phím, 8 voice FIFO, React.memo, ghi và phát lại].
+
+Quyết định [CN]:
+
+- Theme concert hall ban đêm, tông tối đồng bộ HW1/HW3.
+- 88 phím sinh bằng công thức từ midi 21 (A0) đến 108 (C8), f = 440 × 2^((midi − 69)/12); không viết tay 88 thẻ.
+- Bộ âm thanh là class JavaScript `PolyphonicSynth` (không phải class component React): tối đa 8 voice, nốt thứ 9 tắt nốt cũ nhất theo thứ tự chèn của Map (FIFO); envelope giảm mượt trước khi stop để không bị "bụp"; đóng AudioContext khi unmount.
+- `PianoKey` bọc `React.memo`; handler ổn định bằng `useCallback`; bấm 1 phím chỉ phím đó render lại.
+- Bàn phím máy tính: A W S E D F T G Y H U J K = một quãng tám (Đô → Đô); Z/X hạ/nâng quãng tám, giới hạn trong 88 phím. Dùng `e.code`, chặn `e.repeat`, bỏ qua khi đang gõ trong input, keyup thì tắt nốt.
+- 375px: piano cuộn ngang trong khung riêng, trang không cuộn ngang; tự cuộn tới quãng tám đang chọn.
+- Ghi âm tối đa 200 nốt `{ midi, freqHz, durationMs, deltaMs }`; phát lại 0.5x / 1x / 2x; nút Stop hủy ngay bằng AbortController và tắt mọi voice.
+
+| ID  | Nhiệm vụ                    | Kết quả cần đạt                                                                                                    | Nguồn       |
+| --- | --------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------- |
+| 8.0 | Khởi tạo project `HW2/`     | Giống HW1/HW3 (ESLint, React 19.x); chạy được                                                                      | [ĐỀ] + [CN] |
+| 8.1 | Sinh 88 phím và bộ âm thanh | Hàm sinh phím (52 trắng, 36 đen); `PolyphonicSynth` 8 voice FIFO, envelope không bụp, cleanup                      | [ĐỀ]        |
+| 8.2 | Piano UI và React.memo      | `PianoKey` memo, `<button type="button" aria-pressed>`; chuột (pointer) và bàn phím máy tính; Z/X đổi quãng tám    | [ĐỀ] + [CN] |
+| 8.3 | Ghi âm và phát lại          | Ghi tối đa 200 nốt; phát lại 0.5x/1x/2x; Stop hủy bằng AbortController, unmount cũng hủy                           | [ĐỀ]        |
+| 8.4 | UI và Accessibility         | `<select>`/nút tốc độ có label + `useId()`; trạng thái trong `<output role="status">`; CSS Module; 375px; Lighthouse 100 | [ĐỀ]        |
+
+**Tiêu chí hoàn thành:**
+
+- [ ] Đếm được 88 phím (52 trắng, 36 đen), không có thẻ viết tay [ĐỀ]
+- [ ] Giữ 9 phím: nốt đầu tiên tự tắt, không rè [ĐỀ]
+- [ ] Profiler: bấm 1 phím chỉ 1 `PianoKey` render lại [ĐỀ]
+- [ ] Phát lại đúng 3 tốc độ; Stop dừng ngay, không còn tiếng [ĐỀ]
+- [ ] 375px trang không cuộn ngang; Lighthouse Accessibility 100 [ĐỀ]
+
 ## 3. Commit bắt buộc theo đề
 
 Các message dưới đây giữ nguyên chính xác [ĐỀ]. Chỉ commit sau khi phần việc tương ứng đã được triển khai và kiểm thử [CN].
@@ -328,12 +360,14 @@ Các message dưới đây giữ nguyên chính xác [ĐỀ]. Chỉ commit sau k
 | 12  | HW3      | `feat(hw3): add PVS leaderboard filter & sort`                     | 6.4, 6.5                                    |
 | 13  | HW1      | `feat(hw1): add taiko keyboard hook & web audio`                   | **7.0 (khởi tạo Vite)**, 7.1, 7.2           |
 | 14  | HW1      | `feat(hw1): add taiko pads, hit log & soul gauge`                  | 7.3, 7.4                                    |
+| 15  | HW2      | `feat(hw2): add 88-key generator & FIFO polyphonic synth`          | **8.0 (khởi tạo Vite)**, 8.1                |
+| 16  | HW2      | `feat(hw2): add memoized piano, recorder & replay`                 | 8.2 – 8.4                                   |
 
 Commit 10–12 do người làm bài tự đặt vì slide không cho sẵn message cho HW3 [CN].
 
 Quy tắc [CN]:
 
-- Phần khởi tạo project Vite (1.0b, 2.0, 3.0, 5.0, 6.0, 7.0) được gộp vào commit bắt buộc đầu tiên của Exercise tương ứng; không tạo commit riêng chỉ để khởi tạo project.
+- Phần khởi tạo project Vite (1.0b, 2.0, 3.0, 5.0, 6.0, 7.0, 8.0) được gộp vào commit bắt buộc đầu tiên của Exercise tương ứng; không tạo commit riêng chỉ để khởi tạo project.
 - Ranh giới commit theo các message bắt buộc ở trên; nhiệm vụ nhỏ là đơn vị làm và kiểm tra, không phải đơn vị commit.
 - Commit khác chỉ tạo khi có thay đổi thực tế nằm ngoài các commit bắt buộc; không tạo commit để đạt số lượng.
 - Trước mỗi commit: `git status`, `git diff`, `git add <file>` đúng phạm vi.

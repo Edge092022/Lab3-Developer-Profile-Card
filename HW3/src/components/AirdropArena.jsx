@@ -3,7 +3,16 @@ import CrateCard from './CrateCard.jsx';
 import { CRATES } from '../data/crates.js';
 
 function AirdropArena() {
-  const [crates] = useState(CRATES);
+  const [crates, setCrates] = useState(CRATES);
+
+  // delta = -1 khi claim (optimistic), +1 khi rollback 409.
+  function changeCrateStock(crateId, delta) {
+    setCrates((previousCrates) =>
+      previousCrates.map((crate) =>
+        crate.id === crateId ? { ...crate, stock: crate.stock + delta } : crate,
+      ),
+    );
+  }
 
   return (
     <main>
@@ -15,7 +24,11 @@ function AirdropArena() {
 
       <ul className="grid">
         {crates.map((crate) => (
-          <CrateCard key={crate.id} crate={crate} />
+          <CrateCard
+            key={crate.id}
+            crate={crate}
+            onStockChange={changeCrateStock}
+          />
         ))}
       </ul>
     </main>

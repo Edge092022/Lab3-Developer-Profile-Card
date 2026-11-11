@@ -1,0 +1,148 @@
+/* Concert hall ban đêm: nền tối của index.css, ánh đèn tím nhẹ từ trên sân khấu. */
+.hall {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  padding: 0 16px 48px;
+  text-align: left;
+  background: radial-gradient(ellipse at top, var(--accent-bg), transparent 60%);
+}
+
+.header {
+  text-align: center;
+}
+
+.title {
+  /* line-height kế thừa từ :root là số px cố định, quá thấp cho chữ h1 to. */
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.subtitle {
+  margin-top: -8px;
+  color: var(--text);
+  font-style: italic;
+}
+
+.panel {
+  margin-top: 32px;
+}
+
+.panelTitle {
+  margin-bottom: 12px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.button {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  background: var(--code-bg);
+  color: var(--text-h);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primaryButton {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.recordDot {
+  color: var(--danger);
+}
+
+.button:hover:not(:disabled) {
+  box-shadow: var(--shadow);
+}
+
+.button:disabled {
+  border-color: var(--border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: not-allowed;
+}
+
+.button:disabled .recordDot {
+  color: inherit;
+}
+
+.button:focus-visible,
+.select:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.field {
+  display: flex;
+  flex: 1 1 160px;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.label {
+  color: var(--text-h);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  background: var(--code-bg);
+  color: var(--text-h);
+  font: inherit;
+}
+
+.meta {
+  margin-top: 12px;
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+.octave {
+  color: var(--text-h);
+  font-family: var(--mono);
+}
+
+/* Vùng thông báo: giữ chiều cao để không giật layout. */
+.status {
+  display: block;
+  min-height: 1.5em;
+  margin-top: 8px;
+  color: var(--text-h);
+}
+
+/* Khung cuộn ngang riêng cho cây đàn. */
+.keyboardFrame {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: linear-gradient(#0d0d12, var(--code-bg));
+  box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* position: relative để offsetLeft của phím tính từ đầu dải phím (dùng khi cuộn tới quãng). */
+.keyboard {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  width: max-content;
+}

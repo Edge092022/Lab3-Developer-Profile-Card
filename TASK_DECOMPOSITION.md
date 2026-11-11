@@ -333,7 +333,7 @@ Commit 10–12 do người làm bài tự đặt vì slide không cho sẵn mess
 
 Quy tắc [CN]:
 
-- Phần khởi tạo project Vite (1.0b, 2.0, 3.0, 5.0, 6.0) được gộp vào commit bắt buộc đầu tiên của Exercise tương ứng; không tạo commit riêng chỉ để khởi tạo project.
+- Phần khởi tạo project Vite (1.0b, 2.0, 3.0, 5.0, 6.0, 7.0) được gộp vào commit bắt buộc đầu tiên của Exercise tương ứng; không tạo commit riêng chỉ để khởi tạo project.
 - Ranh giới commit theo các message bắt buộc ở trên; nhiệm vụ nhỏ là đơn vị làm và kiểm tra, không phải đơn vị commit.
 - Commit khác chỉ tạo khi có thay đổi thực tế nằm ngoài các commit bắt buộc; không tạo commit để đạt số lượng.
 - Trước mỗi commit: `git status`, `git diff`, `git add <file>` đúng phạm vi.

@@ -1,0 +1,48 @@
+.arena {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 16px 48px;
+}
+
+.header {
+  padding-top: 8px;
+}
+
+.kicker {
+  color: var(--accent);
+  font-size: 0.875rem;
+  letter-spacing: 0.4em;
+}
+
+.title {
+  /* line-height ở :root (145% của 16-18px) bị kế thừa thành số px cố định, quá thấp cho chữ 36-56px
+     nên 2 dòng tiêu đề đè lên nhau ở 375px. Đặt lại tỉ lệ theo cỡ chữ của chính h1. */
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.sub {
+  color: var(--text);
+  font-size: 0.875rem;
+  letter-spacing: 0.2em;
+}
+
+/* Vùng thông báo: giữ chiều cao cố định để không giật layout khi có/không có chữ. */
+.status {
+  display: block;
+  min-height: 1.5em;
+  margin: 16px 0;
+  color: var(--text-h);
+  font-size: 0.875rem;
+}
+
+.grid {
+  display: grid;
+  /* min(100%, 260px): ở 375px mỗi card co về đúng bề rộng, không tràn ngang. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}

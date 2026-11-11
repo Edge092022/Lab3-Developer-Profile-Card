@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { usePubgAirdropTimer } from '../hooks/usePubgAirdropTimer.js';
 import { SALE_DURATION_MS } from '../data/crates.js';
 import { claimCrate } from '../api/fakeClaimServer.js';
+import styles from './CrateCard.module.css';
 
 // Tạo một lần cho cả module, không tạo lại mỗi lần render.
 const vndFormatter = new Intl.NumberFormat('vi-VN', {
@@ -13,6 +14,13 @@ const CLAIM_BUTTON_TEXT = {
   IDLE: 'Claim',
   PENDING: 'Đang nhận…',
   CLAIMED: 'Đã nhận',
+};
+
+const PHASE_ANNOUNCEMENT = {
+  WARMUP: 'đang chờ drop.',
+  AIRDROP_LIVE: 'đã mở bán.',
+  LOOTED_OUT: 'đã hết hàng.',
+  EXPIRED: 'đã hết hạn.',
 };
 
 // Hàm thuần: suy ra phase từ thời gian còn lại và kho.
@@ -37,7 +45,7 @@ function formatRemaining(remainingMs) {
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
-function CrateCard({ crate, onStockChange }) {
+function CrateCard({ crate, onStockChange, onAnnounce }) {
   const { id, name, stock, priceVnd } = crate;
   const { remainingMs: msToDrop } = usePubgAirdropTimer(crate.dropEpochMs);
   const { remainingMs: msToExpire } = usePubgAirdropTimer(
@@ -57,6 +65,18 @@ function CrateCard({ crate, onStockChange }) {
   }, []);
 
   const phase = getAirdropPhase({ msToDrop, msToExpire, stock });
+
+  // Phase đổi do đồng hồ (hệ thống bên ngoài), không có event handler nào để gắn thông báo,
+  // nên dùng effect để báo cho cha. Effect chỉ thông báo, không tính hay lưu lại phase.
+  const previousPhaseRef = useRef(phase);
+  useEffect(() => {
+    if (previousPhaseRef.current === phase) {
+      return;
+    }
+    previousPhaseRef.current = phase;
+    onAnnounce(`${name}: ${PHASE_ANNOUNCEMENT[phase]}`);
+  }, [phase, name, onAnnounce]);
+
   const isLootedOut = phase === 'LOOTED_OUT';
   const canClaim = phase === 'AIRDROP_LIVE' && claimStatus === 'IDLE';
 
@@ -80,6 +100,7 @@ function CrateCard({ crate, onStockChange }) {
     try {
       await claimCrate(id, { signal: abortController.signal });
       setClaimStatus('CLAIMED');
+      onAnnounce(`${name}: nhận crate thành công.`);
     } catch (error) {
       if (error.name === 'AbortError') {
         return;
@@ -87,6 +108,11 @@ function CrateCard({ crate, onStockChange }) {
       // Rollback: cộng lại đúng 1 vé đã trừ optimistic.
       onStockChange(id, 1);
       setClaimStatus('IDLE');
+      onAnnounce(
+        error.status === 409
+          ? `${name}: claim thất bại (409), đã trả lại 1 vé.`
+          : `${name}: claim thất bại, đã trả lại 1 vé.`,
+      );
       setClaimError(
         error.status === 409
           ? 'Không nhận được: crate đã bị người khác nhận trước. Số vé đã được trả lại.'
@@ -99,39 +125,43 @@ function CrateCard({ crate, onStockChange }) {
     }
   }
 
+  const cardClassName = isLootedOut
+    ? `${styles.card} ${styles.empty}`
+    : styles.card;
+
   return (
-    <li className={`card ${id}${isLootedOut ? ' empty' : ''}`} data-kanji="補">
-      <h2 className="tab">{name}</h2>
+    <li className={cardClassName} data-kanji="補">
+      <h2 className={styles.tab}>{name}</h2>
       {isLootedOut && (
-        <p className="seal">
+        <p className={styles.seal}>
           HẾT
           <br />
           HÀNG
         </p>
       )}
 
-      <dl>
-        <div className="row">
-          <dt className="lbl">Phase</dt>
-          <dd className="phase">{phase}</dd>
+      <dl className={styles.details}>
+        <div className={styles.row}>
+          <dt className={styles.lbl}>Phase</dt>
+          <dd className={styles.phase}>{phase}</dd>
         </div>
 
-        <div className="row">
-          <dt className="lbl">Kho</dt>
-          <dd className="stock">
-            <span className="hex">{stock}</span>
+        <div className={styles.row}>
+          <dt className={styles.lbl}>Kho</dt>
+          <dd className={styles.stock}>
+            <span className={styles.hex}>{stock}</span>
           </dd>
         </div>
 
-        <div className="row">
-          <dt className="lbl">Giá</dt>
-          <dd className="price">{vndFormatter.format(priceVnd)}</dd>
+        <div className={styles.row}>
+          <dt className={styles.lbl}>Giá</dt>
+          <dd className={styles.price}>{vndFormatter.format(priceVnd)}</dd>
         </div>
 
-        <div className="row">
-          <dt className="lbl">{clockLabel}</dt>
+        <div className={styles.row}>
+          <dt className={styles.lbl}>{clockLabel}</dt>
           <dd>
-            <time className="timer" dateTime={`PT${clockSeconds}S`}>
+            <time className={styles.timer} dateTime={`PT${clockSeconds}S`}>
               {formatRemaining(clockMs)}
             </time>
           </dd>
@@ -140,7 +170,7 @@ function CrateCard({ crate, onStockChange }) {
 
       <button
         type="button"
-        className="claim"
+        className={styles.claim}
         onClick={handleClaim}
         disabled={!canClaim}
       >
@@ -148,7 +178,7 @@ function CrateCard({ crate, onStockChange }) {
       </button>
 
       {claimError !== null && (
-        <p role="alert" className="claim-error">
+        <p role="alert" className={styles.claimError}>
           {claimError}
         </p>
       )}

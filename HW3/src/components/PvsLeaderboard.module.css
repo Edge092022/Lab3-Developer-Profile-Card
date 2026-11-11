@@ -1,0 +1,109 @@
+.leaderboard {
+  margin-top: 48px;
+  text-align: left;
+}
+
+.leaderboardTitle {
+  margin-bottom: 16px;
+}
+
+.leaderboardControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-bottom: 12px;
+}
+
+.field {
+  display: flex;
+  flex: 1 1 200px;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.label {
+  color: var(--text-h);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.input,
+.select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+}
+
+.input:focus-visible,
+.select:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.leaderboardCount {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+/* Ở 375px bảng 6 cột có thể rộng hơn màn hình: chỉ vùng này cuộn ngang, trang thì không. */
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.tableWrap:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.leaderboardTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.leaderboardTable caption {
+  padding: 12px 12px 8px;
+  color: var(--text-h);
+  font-weight: 600;
+  text-align: left;
+}
+
+.leaderboardTable th,
+.leaderboardTable td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.leaderboardTable th:nth-child(2),
+.leaderboardTable td:nth-child(2) {
+  text-align: left;
+}
+
+.leaderboardTable th {
+  color: var(--text-h);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.leaderboardTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.leaderboardTable .emptyRow {
+  color: var(--text);
+  text-align: center;
+  white-space: normal;
+}

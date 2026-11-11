@@ -297,7 +297,7 @@ Quyết định [CN]:
 | 7.0 | Khởi tạo project `HW1/`     | Thống nhất với các bài trước; React 19.x; chạy được                                                                         | [ĐỀ] + [CN] |
 | 7.1 | Hook bàn phím               | `useDrumKeyboard(padMap, onTriggerPad, isEnabled)` dùng `e.code`; chặn `e.repeat`; bỏ qua INPUT/TEXTAREA/SELECT; cleanup listener | [ĐỀ]        |
 | 7.2 | Âm thanh Web Audio          | Tạo tiếng Don/Ka/chuông; một AudioContext dùng chung; đóng khi unmount                                                       | [ĐỀ] + [CN] |
-| 7.3 | Pad và hit log              | 7 `<button type="button" aria-pressed>`; lịch sử 10 lần trong `<output aria-live="polite">`                                  | [ĐỀ]        |
+| 7.3 | Pad và hit log              | 7 `<button type="button" aria-pressed>`; lần gõ mới nhất trong `<output aria-live="polite">`, 10 mục trong `<ol>`             | [ĐỀ]        |
 | 7.4 | Soul gauge, input và UI     | Gauge dạng `<meter>` hoặc tương đương có nhãn; ô tên + thanh âm lượng có `<label htmlFor>` + `useId()`; CSS Module; 375px     | [ĐỀ] + [CN] |
 
 **Tiêu chí hoàn thành:**

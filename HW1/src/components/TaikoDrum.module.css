@@ -1,0 +1,326 @@
+/* Màu trống taiko. Chữ trên mặt trống và chữ màu trên nền trang đều đạt WCAG AA (>= 4.5:1). */
+.dojo {
+  /* Mặt trống (nền nút) */
+  --don-face: #c62828; /* chữ trắng 5.62:1 */
+  --bigdon-face: #9f1d1d; /* chữ trắng 7.87:1 */
+  --ka-face: #1565c0; /* chữ trắng 5.75:1 */
+  --bell-face: #f2b705; /* chữ #1a1300 10.16:1 */
+  --on-face: #fff;
+  --on-bell: #1a1300;
+  /* Viền nút: --text-h tương phản >= 16:1 với nền ở cả 2 mode,
+     nên ranh giới nút luôn rõ dù mặt trống tối (bigdon chỉ 2.27:1 trên nền tối). */
+  --rim: var(--text-h);
+  /* Chữ màu đặt trên nền trang (hit log, chữ bay) */
+  --don-ink: #c62828; /* 5.62:1 trên trắng */
+  --ka-ink: #1565c0; /* 5.75:1 trên trắng */
+  --bell-ink: #8a6100; /* 5.54:1 trên trắng */
+
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 16px 48px;
+  text-align: left;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dojo {
+    --don-ink: #ff8a80; /* 7.83:1 trên #16171d */
+    --ka-ink: #82b1ff; /* 8.24:1 */
+    --bell-ink: #ffd54f; /* 12.67:1 */
+  }
+}
+
+.header {
+  text-align: center;
+}
+
+.title {
+  /* line-height kế thừa từ :root là số px cố định, quá thấp cho chữ to -> đặt lại theo cỡ chữ h1. */
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.player {
+  margin-top: -8px;
+  color: var(--text-h);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  margin-top: 24px;
+}
+
+.field {
+  display: flex;
+  flex: 1 1 220px;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.label {
+  color: var(--text-h);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.volumeValue {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.textInput {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+}
+
+.range {
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  accent-color: var(--don-face);
+  cursor: pointer;
+}
+
+.textInput:focus-visible,
+.range:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.panel {
+  margin-top: 32px;
+}
+
+.panelTitle {
+  margin-bottom: 4px;
+}
+
+.hint {
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+/* Vùng trống + lớp chữ bay chồng lên trên. */
+.stage {
+  position: relative;
+  margin-top: 16px;
+}
+
+.pads {
+  display: grid;
+  /* min(100%, 88px): ở 375px chia 3 cột, không tràn ngang. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 88px), 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.padItem {
+  display: flex;
+  justify-content: center;
+}
+
+.pad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  max-width: 128px;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 4px solid var(--rim);
+  border-radius: 50%;
+  font: inherit;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    transform 80ms ease-out,
+    box-shadow 80ms ease-out;
+}
+
+.padDon {
+  background: var(--don-face);
+  color: var(--on-face);
+}
+
+.padBigdon {
+  border-width: 6px;
+  background: var(--bigdon-face);
+  color: var(--on-face);
+}
+
+.padKa {
+  background: var(--ka-face);
+  color: var(--on-face);
+}
+
+.padBell {
+  background: var(--bell-face);
+  color: var(--on-bell);
+}
+
+/* Nháy sáng 120ms khi vừa gõ. */
+.pad[aria-pressed='true'] {
+  transform: scale(0.92);
+  box-shadow: 0 0 0 6px var(--bell-face);
+}
+
+.pad:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.padLabel {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.padKey {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.floaters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.floater {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  font-size: 2rem;
+  font-weight: 800;
+  white-space: nowrap;
+  text-shadow:
+    0 0 4px var(--bg),
+    0 0 8px var(--bg);
+  transform: translate(-50%, 0);
+  animation: floatUp 700ms ease-out forwards;
+}
+
+@keyframes floatUp {
+  from {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -72px);
+  }
+}
+
+.inkDon {
+  color: var(--don-ink);
+}
+
+.inkKa {
+  color: var(--ka-ink);
+}
+
+.inkBell {
+  color: var(--bell-ink);
+}
+
+.latest {
+  min-height: 1.5em;
+  margin-top: 16px;
+  color: var(--text-h);
+}
+
+.gaugeHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.gaugeValue {
+  color: var(--text-h);
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.gauge {
+  appearance: none;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 20px;
+  border: 2px solid var(--rim);
+  border-radius: 999px;
+  background: var(--code-bg);
+  overflow: hidden;
+}
+
+.gauge::-webkit-meter-bar {
+  height: 100%;
+  border: none;
+  border-radius: 999px;
+  background: var(--code-bg);
+}
+
+.gauge::-webkit-meter-optimum-value,
+.gauge::-webkit-meter-suboptimum-value,
+.gauge::-webkit-meter-even-less-good-value {
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--don-face), var(--bell-face));
+}
+
+.gauge::-moz-meter-bar {
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--don-face), var(--bell-face));
+}
+
+.log {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.logItem {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.logKey {
+  color: var(--text);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Giảm chuyển động: chữ hiện tại chỗ (~400ms, gỡ bằng timer), không bay; nút không co lại. */
+@media (prefers-reduced-motion: reduce) {
+  .floater {
+    animation: none;
+  }
+
+  .pad {
+    transition: none;
+  }
+
+  .pad[aria-pressed='true'] {
+    transform: none;
+  }
+}

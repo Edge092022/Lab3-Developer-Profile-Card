@@ -11,6 +11,7 @@ Phân chia Lab 03 thành các giai đoạn và nhiệm vụ nhỏ để dễ tri
 - Exercise 3 – PubgMatchTelemetry
 - Bonus – SituationshipAnalyzer (bắt buộc làm, không cộng điểm)
 - Homework 3 – KRAFTON PUBG VN Airdrop Arena
+- Homework 1 – Taiko Drum Kit
   Homework 1, 2 sẽ được bổ sung thành các giai đoạn riêng trước khi bắt đầu làm.
 
 Nguyên tắc:
@@ -44,7 +45,8 @@ Lab3_WD/
 ├── Ex2/
 ├── Ex3/
 ├── Bonus/
-└── HW3/
+├── HW3/
+└── HW1/
 ```
 
 - Mỗi Exercise có một folder riêng chứa source code và các file cần thiết của Exercise đó.
@@ -269,6 +271,43 @@ Thiết kế phase đã chốt [CN]:
 - [ ] 375px không cuộn ngang; Lighthouse Accessibility 100 [ĐỀ]
 - [ ] Ghi lỗi AI thực tế phát sinh vào `AI_FAILURE_AUDIT.md` [ĐỀ]
 
+### Giai đoạn 7 – Homework 1: Taiko Drum Kit
+
+Mọi đường dẫn trong giai đoạn này tính từ `HW1/`. Mục tiêu WCAG 2.2 AA và Lighthouse 100 [ĐỀ].
+
+Theme đã chốt [CN]: game nhịp điệu trống taiko, tự đặt tên app; không dùng tên, logo hay linh vật của game có thật.
+
+| Phím | Pad | Loại |
+| ---- | --- | ---- |
+| D, J | ドン (mặt trống) | Don |
+| S, K | カッ (vành trống) | Ka |
+| A, L | ドン大 (Don lớn) | Don |
+| W    | 鈴 (chuông lễ hội) | Chuông |
+
+Quyết định [CN]:
+
+- Âm thanh tự tạo bằng Web Audio (Don trầm, Ka ngắn kiểu gõ gỗ, chuông cao); không dùng file âm thanh. Đóng AudioContext khi unmount.
+- Lịch sử gõ giữ 10 lần gần nhất, hiện dạng chữ 「ドン!」「カッ!」, cập nhật bất biến.
+- Soul gauge (魂): mỗi lần gõ tăng một mức, tự tụt dần; timer có cleanup.
+- Ô "Tên người chơi" và thanh trượt âm lượng tổng để chứng minh gõ trong input không kích trống.
+- Hiệu ứng chữ bay tôn trọng `prefers-reduced-motion`.
+
+| ID  | Nhiệm vụ                    | Kết quả cần đạt                                                                                                             | Nguồn       |
+| --- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 7.0 | Khởi tạo project `HW1/`     | Thống nhất với các bài trước; React 19.x; chạy được                                                                         | [ĐỀ] + [CN] |
+| 7.1 | Hook bàn phím               | `useDrumKeyboard(padMap, onTriggerPad, isEnabled)` dùng `e.code`; chặn `e.repeat`; bỏ qua INPUT/TEXTAREA/SELECT; cleanup listener | [ĐỀ]        |
+| 7.2 | Âm thanh Web Audio          | Tạo tiếng Don/Ka/chuông; một AudioContext dùng chung; đóng khi unmount                                                       | [ĐỀ] + [CN] |
+| 7.3 | Pad và hit log              | 7 `<button type="button" aria-pressed>`; lịch sử 10 lần trong `<output aria-live="polite">`                                  | [ĐỀ]        |
+| 7.4 | Soul gauge, input và UI     | Gauge dạng `<meter>` hoặc tương đương có nhãn; ô tên + thanh âm lượng có `<label htmlFor>` + `useId()`; CSS Module; 375px     | [ĐỀ] + [CN] |
+
+**Tiêu chí hoàn thành:**
+
+- [ ] Bấm chuột và phím W A S D J K L đều ra tiếng; bật UniKey vẫn hoạt động [ĐỀ]
+- [ ] Giữ phím không kêu liên tục [ĐỀ]
+- [ ] Gõ trong ô tên người chơi không kích trống [ĐỀ]
+- [ ] Không còn `keyCode`; mọi listener/timer/AudioContext có cleanup [ĐỀ]
+- [ ] 375px không cuộn ngang; Lighthouse Accessibility 100 [ĐỀ]
+
 ## 3. Commit bắt buộc theo đề
 
 Các message dưới đây giữ nguyên chính xác [ĐỀ]. Chỉ commit sau khi phần việc tương ứng đã được triển khai và kiểm thử [CN].
@@ -287,6 +326,8 @@ Các message dưới đây giữ nguyên chính xác [ĐỀ]. Chỉ commit sau k
 | 10  | HW3      | `feat(hw3): add anti-drift airdrop timer hook`                     | **6.0 (khởi tạo Vite)**, 6.1, 6.2           |
 | 11  | HW3      | `feat(hw3): add optimistic claim with 409 rollback`                | 6.3                                         |
 | 12  | HW3      | `feat(hw3): add PVS leaderboard filter & sort`                     | 6.4, 6.5                                    |
+| 13  | HW1      | `feat(hw1): add taiko keyboard hook & web audio`                   | **7.0 (khởi tạo Vite)**, 7.1, 7.2           |
+| 14  | HW1      | `feat(hw1): add taiko pads, hit log & soul gauge`                  | 7.3, 7.4                                    |
 
 Commit 10–12 do người làm bài tự đặt vì slide không cho sẵn message cho HW3 [CN].
 
